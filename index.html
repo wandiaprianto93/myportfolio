@@ -12,6 +12,10 @@
     <!-- Bootstrap -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
 
+    <!-- Javascript -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" rel="stylesheet">
+
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -270,25 +274,26 @@
     <!-- JS -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
     
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-
     <script>
-        $('.client-carousel').owlCarousel({
-            loop: true,
-            margin: 30,
-            autoplay: true,
-            autoplayTimeout: 0,
-            autoplaySpeed: 4000,
-            slideTransition: 'linear',
-            autoplayHoverPause: false,
-            dots: false,
-            nav: false,
-            responsive: {
-                0: { items: 2 },
-                600: { items: 4 },
-                1000: { items: 6 }
-            }
+        $(document).ready(function () {
+            $('.client-carousel').owlCarousel({
+                loop: true,
+                margin: 30,
+                autoplay: true,
+                autoplayTimeout: 0,
+                autoplaySpeed: 4000,
+                slideTransition: 'linear',
+                autoplayHoverPause: false,
+                dots: false,
+                nav: false,
+                responsive: {
+                    0: { items: 2 },
+                    600: { items: 4 },
+                    1000: { items: 6 }
+                }
+            });
         });
     </script>
 </body>
