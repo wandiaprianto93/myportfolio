@@ -25,10 +25,15 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      position: relative;
     }
 
     header h1 {
       color: #38bdf8;
+    }
+
+    nav {
+      display: flex;
     }
 
     nav a {
@@ -126,6 +131,39 @@
       margin-top: 50px;
     }
 
+    /* Hamburger Menu */
+    .menu-toggle {
+      display: none;
+      font-size: 28px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        display: none;
+        position: absolute;
+        top: 70px;
+        right: 10%;
+        background: #020617;
+        flex-direction: column;
+        width: 200px;
+        padding: 20px;
+        border-radius: 10px;
+      }
+
+      nav.active {
+        display: flex;
+      }
+
+      nav a {
+        margin: 10px 0;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+    }
+
     /* Floating WhatsApp */
     .wa-float {
       position: fixed;
@@ -149,6 +187,34 @@
     .wa-float:hover {
       transform: scale(1.1);
     }
+
+    .contact-box {
+      margin-top: 30px;
+    }
+
+    .contact-box p {
+      margin: 15px 0;
+      font-size: 18px;
+    }
+
+    .contact-box a {
+      color: #38bdf8;
+      text-decoration: none;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+
+    .contact-box a:hover {
+      color: #0ea5e9;
+      text-decoration: underline;
+    }
+
+    .contact-box {
+      background: #1e293b;
+      padding: 25px;
+      border-radius: 15px;
+      display: inline-block;
+    }
   </style>
 </head>
 
@@ -156,7 +222,10 @@
 
   <header>
     <h1>Borneo Tech Studio</h1>
-    <nav>
+
+    <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+
+    <nav id="nav-menu">
       <a href="#">Home</a>
       <a href="#services">Services</a>
       <a href="#portfolio">Portfolio</a>
@@ -175,16 +244,16 @@
     <h2>Layanan Kami</h2>
     <div class="services">
       <div class="card">
-        <h3>Desktop App Development</h3>
-        <p>Software desktop untuk operasional bisnis yang cepat dan efisien.</p>
-      </div>
-      <div class="card">
         <h3>Web App Development</h3>
         <p>Aplikasi web custom untuk sistem bisnis, dashboard, dan platform digital.</p>
       </div>
       <div class="card">
         <h3>Mobile App Development</h3>
         <p>Aplikasi Android & iOS untuk meningkatkan engagement dan layanan pelanggan.</p>
+      </div>
+      <div class="card">
+        <h3>Desktop App Development</h3>
+        <p>Software desktop untuk operasional bisnis yang cepat dan efisien.</p>
       </div>
     </div>
   </section>
@@ -214,8 +283,31 @@
 
   <section class="section" id="contact">
     <h2>Kontak Kami</h2>
-    <p>Email: borneotechstudio@gmail.com</p>
-    <p>WhatsApp: 085250878278</p>
+
+    <div class="contact-box">
+
+      <p>
+        📧
+        <a href="mailto:borneotechstudio@gmail.com">
+          borneotechstudio@gmail.com
+        </a>
+      </p>
+
+      <p>
+        💬
+        <a href="https://wa.me/6285250878278" target="_blank">
+          0852-5087-8278
+        </a>
+      </p>
+
+      <p>
+        📸
+        <a href="https://instagram.com/borneotechstudio" target="_blank">
+          @borneotechstudio
+        </a>
+      </p>
+
+    </div>
   </section>
 
   <footer>
@@ -223,7 +315,15 @@
   </footer>
 
   <!-- Floating WhatsApp Button -->
-  <a href="https://wa.me/6285250878278" class="wa-float" target="_blank">💬</a>
+  <a href="https://wa.me/6285250878278" class="wa-float" target="_blank"><img
+      src="https://cdn-icons-png.flaticon.com/512/733/733585.png" width="30"></a>
+
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById("nav-menu");
+      menu.classList.toggle("active");
+    }
+  </script>
 
 </body>
 
