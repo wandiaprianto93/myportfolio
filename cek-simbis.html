@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cek Format Laporan Simulasi Bisnis</title>
+<meta name="description" content="Alat bantu mahasiswa Bisnis Digital untuk memeriksa format, tata bahasa, kutipan, dan daftar pustaka Laporan Simulasi Bisnis.">
+<style>
+:root{--ink:#10292b;--mut:#4e6466;--line:#cfdcda;--bg:#eef4f2;--teal:#0b7a66;--ok:#0b7a66;--warn:#a85d00;--bad:#b3261e;--info:#35607a}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:820px;margin:0 auto;padding:0 18px}
+header{background:var(--teal);color:#fff;padding:26px 0 20px;border-bottom:6px solid #12af92}
+h1{margin:0 0 4px;font:700 1.6rem/1.2 Georgia,"Times New Roman",serif}
+header p{margin:0;font-size:.95rem;opacity:.92}
+.note{background:#fff8e6;border:1px solid #e3c87d;border-radius:8px;padding:12px 14px;margin:20px 0;font-size:.93rem}
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px;margin-bottom:20px}
+.modes{display:flex;gap:18px;flex-wrap:wrap;margin:0 0 14px}
+.modes label{cursor:pointer;font-weight:600}
+label.f{display:block;font-size:.9rem;font-weight:600;margin:12px 0 4px}
+input[type=file],input[type=number],input[type=text],textarea{width:100%;font:inherit;padding:9px 10px;border:1px solid #9db3b0;border-radius:6px;background:#fff;color:var(--ink)}
+textarea{min-height:200px;font-family:"Times New Roman",serif}
+.row{display:grid;grid-template-columns:1fr 160px;gap:14px}
+@media(max-width:560px){.row{grid-template-columns:1fr}}
+.hint{font-size:.85rem;color:var(--mut);margin:4px 0 0}
+button{font:inherit;font-weight:700;border:0;border-radius:6px;padding:10px 18px;cursor:pointer;background:var(--teal);color:#fff}
+button.sec{background:#fff;color:var(--teal);border:1px solid var(--teal)}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid #12af92;outline-offset:2px}
+.act{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.sum{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 14px;font-weight:700}
+.sum span{padding:4px 10px;border-radius:99px;background:#fff;border:1px solid var(--line)}
+h2{font:700 1.1rem Georgia,serif;margin:22px 0 8px}
+.it{background:#fff;border:1px solid var(--line);border-left:6px solid var(--info);border-radius:6px;padding:10px 14px;margin:0 0 10px}
+.it h3{margin:0;font-size:1rem}
+.it p{margin:3px 0 0;font-size:.92rem;color:var(--mut)}
+.it ul{margin:6px 0 0;padding-left:18px;font:.9rem "Times New Roman",serif;color:var(--ink)}
+.s-ok{border-left-color:var(--ok)}.s-warn{border-left-color:var(--warn)}.s-bad{border-left-color:var(--bad)}
+.tag{font-size:.78rem;font-weight:700;margin-left:6px}
+.s-ok .tag{color:var(--ok)}.s-warn .tag{color:var(--warn)}.s-bad .tag{color:var(--bad)}.s-info .tag{color:var(--info)}
+.msg{color:var(--bad);font-weight:600}
+footer{font-size:.88rem;color:var(--mut);padding:6px 0 40px}
+footer ul{padding-left:18px}
+@media print{header,.note,.card,.act,footer{display:none}body{background:#fff}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<h1>Cek Format Laporan Simulasi Bisnis</h1>
+<p>Program Studi Bisnis Digital · Fakultas Teknologi Informasi · Universitas Widya Dharma Pontianak</p>
+</div></header>
+
+<main class="wrap">
+<section class="note" role="note">
+<strong>Ini alat bantu, bukan penilai.</strong> Hasil pemeriksaan hanya berdasarkan aturan yang bisa dibaca otomatis dari Buku Pedoman Laporan Simulasi Bisnis dan dapat keliru. Lolos pemeriksaan tidak berarti laporan sudah benar, dan temuan tidak selalu berarti salah. Keputusan akhir ada pada dosen pembimbing. Berkas diproses di browser Anda dan tidak diunggah ke server mana pun.
+</section>
+
+<section class="card">
+<div class="modes">
+<label><input type="radio" name="mode" value="docx" checked> Unggah file .docx (format + teks)</label>
+<label><input type="radio" name="mode" value="text"> Tempel teks (teks saja)</label>
+</div>
+<div id="fdocx">
+<label class="f" for="file">File laporan (.docx)</label>
+<input id="file" type="file" accept=".docx">
+<p class="hint">Laporan berbentuk PDF tidak bisa diperiksa formatnya. Salin teksnya ke mode tempel teks.</p>
+</div>
+<div id="ftext" hidden>
+<label class="f" for="txt">Teks laporan</label>
+<textarea id="txt" placeholder="Tempel isi laporan di sini, mulai dari Kata Pengantar sampai Daftar Pustaka…"></textarea>
+</div>
+<div class="row">
+<div><label class="f" for="jdl">Judul laporan (opsional)</label><input id="jdl" type="text" placeholder="Maksimal 15 kata, tanpa singkatan"></div>
+<div><label class="f" for="thn">Tahun penulisan</label><input id="thn" type="number" min="2000" max="2100"></div>
+</div>
+<div class="act"><button id="go">Periksa laporan</button></div>
+</section>
+
+<div id="out" aria-live="polite"></div>
+<div class="act" id="exp" hidden><button class="sec" id="cp">Salin ringkasan</button><button class="sec" onclick="print()">Cetak / simpan PDF</button></div>
+</main>
+
+<footer class="wrap">
+<h2>Yang belum bisa diperiksa</h2>
+<ul>
+<li>Typo dicek dengan daftar kata tidak baku yang umum, bukan kamus lengkap. Salah ketik biasa (mis. “bsinis”) tidak terdeteksi. Gunakan juga pemeriksa ejaan di Word.</li>
+<li>Isi dan kualitas analisis, kesesuaian judul dengan isi, serta kebenaran data tidak diperiksa.</li>
+<li>Tidak diperiksa otomatis: nomor halaman per bagian (romawi/latin), penomoran bab/subbab, penomoran dan posisi caption tabel/gambar, tabel terpotong halaman, kutipan langsung panjang, spasi Daftar Pustaka, dan keaslian sumber.</li>
+<li>Pemeriksaan format .docx membaca pengaturan paragraf dan gaya (style) di file. Paragraf yang diformat tidak lazim bisa terbaca keliru.</li>
+<li>Aturan diambil dari Buku Pedoman Edisi 1 (2023). Jika prodi memperbarui pedoman, ikuti pedoman terbaru.</li>
+</ul>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const snip=(t,n=70)=>{t=t.replace(/\s+/g,' ').trim();return t.length>n?t.slice(0,n)+'…':t};
+const add=(R,g,s,t,d,ex)=>R.push({g,s,t,d:d||'',ex:ex||[]});
+const W=(e,n)=>e?e.getElementsByTagName(n)[0]:null;
+const cm=v=>(v/566.93).toFixed(1).replace('.',',');
+let mode='docx',RES=[];
+$('#thn').value=new Date().getFullYear();
+document.querySelectorAll('[name=mode]').forEach(r=>r.onchange=()=>{mode=r.value;$('#fdocx').hidden=mode!=='docx';$('#ftext').hidden=mode!=='text'});
+$('#go').onclick=run;
+$('#cp').onclick=()=>{const t=RES.map(r=>`[${{ok:'Sesuai',warn:'Perlu dicek',bad:'Temuan',info:'Info'}[r.s]}] ${r.t}: ${r.d}`+r.ex.map(e=>'\n   - '+e).join('')).join('\n');navigator.clipboard.writeText('Hasil pengecekan otomatis (alat bantu, bukan penilaian dosen)\n\n'+t).then(()=>{$('#cp').textContent='Tersalin'})};
+const msg=t=>{$('#out').innerHTML=`<p class="msg">${esc(t)}</p>`;$('#exp').hidden=true};
+
+/* ---------- DOCX ---------- */
+async function readDocx(file){
+ const z=await JSZip.loadAsync(await file.arrayBuffer());
+ const get=async n=>z.file(n)?new DOMParser().parseFromString(await z.file(n).async('string'),'application/xml'):null;
+ const d=await get('word/document.xml');if(!d)throw 0;
+ const s=await get('word/styles.xml'),th=await get('word/theme/theme1.xml');
+ const styles={};let defP=null;
+ if(s)[...s.getElementsByTagName('w:style')].forEach(e=>{styles[e.getAttribute('w:styleId')]=e;if(e.getAttribute('w:type')==='paragraph'&&e.getAttribute('w:default')==='1')defP=e.getAttribute('w:styleId')});
+ const tf=n=>{const a=th&&W(th,n),l=a&&W(a,'a:latin');return l?l.getAttribute('typeface'):null};
+ let hasPage=false;
+ for(const n of Object.keys(z.files))if(/^word\/(header|footer)\d*\.xml$/.test(n)&&/PAGE/.test(await z.file(n).async('string')))hasPage=true;
+ const inTbl=e=>{while((e=e.parentNode)&&e.nodeName!=='w:body')if(e.nodeName==='w:tbl')return true;return false};
+ const ptext=p=>[...p.getElementsByTagName('*')].map(n=>n.nodeName==='w:t'?n.textContent:n.nodeName==='w:tab'?'\t':n.nodeName==='w:br'?'\n':'').join('');
+ const paras=[...d.getElementsByTagName('w:p')].map(el=>({el,text:ptext(el),tbl:inTbl(el)}));
+ return{styles,defP,dd:W(s,'w:docDefaults'),minor:tf('a:minorFont'),major:tf('a:majorFont'),hasPage,paras,sect:[...d.getElementsByTagName('w:sectPr')]};
+}
+const onv=e=>!['0','false','off'].includes(e.getAttribute('w:val')||'1');
+const at=(n,a)=>x=>{const e=W(x,n);return e&&e.hasAttribute(a)?e.getAttribute(a):null};
+const tog=n=>x=>{const e=W(x,n);return e?(onv(e)?1:0):null};
+const chainOf=(doc,id)=>{const a=[];let i=id||doc.defP,k=0;while(i&&doc.styles[i]&&k++<20){a.push(doc.styles[i]);const b=W(doc.styles[i],'w:basedOn');i=b&&b.getAttribute('w:val')}return a};
+function gP(doc,p,fn){
+ const pp=W(p,'w:pPr');let v=pp?fn(pp):null;if(v!=null)return v;
+ const st=pp&&W(pp,'w:pStyle');
+ for(const s of chainOf(doc,st&&st.getAttribute('w:val'))){const x=W(s,'w:pPr');v=x?fn(x):null;if(v!=null)return v}
+ const x=doc.dd&&W(doc.dd,'w:pPrDefault');return x?fn(x):null;
+}
+function gR(doc,p,r,fn){
+ const rp=W(r,'w:rPr');let v=rp?fn(rp):null;if(v!=null)return v;
+ const pp=W(p,'w:pPr'),st=pp&&W(pp,'w:pStyle');
+ for(const s of chainOf(doc,st&&st.getAttribute('w:val'))){const x=W(s,'w:rPr');v=x?fn(x):null;if(v!=null)return v}
+ const x=doc.dd&&W(doc.dd,'w:rPrDefault');return x?fn(x):null;
+}
+function pustakaLines(paras){
+ let i=-1;paras.forEach((t,k)=>{if(/^\s*daftar pustaka\s*$/i.test(t))i=k});
+ if(i<0)return null;const lines=[];
+ for(let k=i+1;k<paras.length;k++){const t=paras[k].trim();if(t.length<40&&/^(daftar riwayat hidup|lampiran)\b/i.test(t))break;if(t)lines.push(t)}
+ return{i,lines};
+}
+const FOREIGN=/(?<![\p{L}])(website|online|offline|marketing|customer|software|startup|e-commerce|feedback|branding|download|upload|update|marketplace|review|mobile)(?![\p{L}])/iu;
+
+function checkFormat(doc,R){
+ const G='Format dokumen (.docx)',num=v=>v==null?null:+v;
+ const is=new Set();
+ doc.sect.forEach(s=>{
+  const z=W(s,'w:pgSz'),m=W(s,'w:pgMar');
+  if(z){const w=+z.getAttribute('w:w'),h=+z.getAttribute('w:h');if(Math.abs(Math.min(w,h)-11906)>80||Math.abs(Math.max(w,h)-16838)>80)is.add(`ukuran kertas ${cm(w)} × ${cm(h)} cm (seharusnya A4: 21 × 29,7 cm)`)}
+  if(m)[['top','atas',3],['bottom','bawah',3],['left','kiri',4],['right','kanan',3]].forEach(([k,n,e])=>{const v=+m.getAttribute('w:'+k);if(Math.abs(v-e*566.93)>60)is.add(`margin ${n} ${cm(v)} cm (seharusnya ${e} cm)`)});
+ });
+ if(!doc.sect.length)add(R,G,'info','Ukuran kertas & margin','Pengaturan halaman tidak terbaca. Periksa manual.');
+ else is.size?add(R,G,'bad','Ukuran kertas & margin',[...is].join('; ')+'.'):add(R,G,'ok','Ukuran kertas & margin','A4 dengan margin atas 3, bawah 3, kiri 4, kanan 3 cm.');
+
+ const P=pustakaLines(doc.paras.map(p=>p.text)),end=P?P.i:doc.paras.length;
+ const B=doc.paras.slice(0,end).filter(p=>!p.tbl&&p.text.trim().length>=120&&!(num(gP(doc,p.el,at('w:ind','w:left')))>=300));
+ const runs=p=>[...p.el.getElementsByTagName('w:r')].filter(r=>W(r,'w:t'));
+ const rv=(p,fn)=>runs(p).map(r=>gR(doc,p.el,r,fn));
+ const fFont=x=>{const e=W(x,'w:rFonts');if(!e)return null;const a=e.getAttribute('w:ascii');if(a)return a;const t=e.getAttribute('w:asciiTheme');return t?(/major/i.test(t)?doc.major:doc.minor):null};
+ const fSz=at('w:sz','w:val');
+ const M=[
+  ['Jenis huruf Times New Roman',p=>rv(p,fFont).every(f=>f==null||/times new roman/i.test(f)),'Isi laporan memakai Times New Roman.'],
+  ['Ukuran huruf isi 12 pt',p=>rv(p,fSz).every(s=>s==null||+s===24),'Ukuran huruf isi 12 pt.'],
+  ['Spasi antarbaris 2',p=>{const l=num(gP(doc,p.el,at('w:spacing','w:line')));return l!=null&&Math.abs(l-480)<=10},'Atur Line spacing: Double (kecuali kutipan panjang, caption, daftar pustaka).'],
+  ['Spasi sebelum/sesudah paragraf 0 pt',p=>['w:before','w:after'].every(a=>(num(gP(doc,p.el,at('w:spacing',a)))||0)===0),'Atur Before dan After menjadi 0 pt.'],
+  ['Indentasi awal paragraf 0,5 inci',p=>{if(/^[ \t\u00a0]{2,}/.test(p.text))return false;const f=num(gP(doc,p.el,at('w:ind','w:firstLine'))),c=num(gP(doc,p.el,at('w:ind','w:firstLineChars')));return(f!=null&&Math.abs(f-720)<=60)||(c!=null&&c>0)},'Gunakan First line indent 0,5″, bukan spasi atau tab.'],
+  ['Rata kiri-kanan (justify)',p=>['both','distribute'].includes(gP(doc,p.el,at('w:jc','w:val'))),'Paragraf isi diatur Justify.']
+ ];
+ if(!B.length)add(R,G,'info','Format paragraf isi','Tidak ditemukan paragraf isi yang cukup panjang untuk diperiksa.');
+ else M.forEach(([t,fn,h])=>{const bad=B.filter(p=>!fn(p)),n=bad.length;
+  add(R,G,n===0?'ok':n/B.length<.1?'warn':'bad',t,n===0?`Sesuai pada ${B.length} paragraf isi yang diperiksa.`:`${n} dari ${B.length} paragraf isi belum sesuai. ${h}`,bad.slice(0,3).map(p=>snip(p.text)))});
+
+ const hd=doc.paras.filter(p=>!p.tbl&&p.text.length<100&&/^BAB\s+[IVX]+\b/i.test(p.text.trim())&&!/\.{4,}|\s\d+\s*$/.test(p.text));
+ if(hd.length){const bad=hd.filter(p=>{const r=runs(p)[0];return !(r&&gR(doc,p.el,r,tog('w:b'))===1&&gP(doc,p.el,at('w:jc','w:val'))==='center'&&p.text.trim()===p.text.trim().toUpperCase())});
+  add(R,G,bad.length?'bad':'ok','Judul bab',bad.length?`${bad.length} dari ${hd.length} judul bab belum kapital, tebal, dan rata tengah.`:'Judul bab kapital, tebal, dan rata tengah.',bad.slice(0,3).map(p=>snip(p.text)))}
+ add(R,G,doc.hasPage?'ok':'warn','Nomor halaman otomatis',doc.hasPage?'Nomor halaman otomatis ditemukan di header/footer. Letak dan jenis angka (romawi/latin) perlu dicek manual.':'Nomor halaman otomatis tidak ditemukan di header/footer.');
+
+ const it=new Set();
+ doc.paras.slice(0,end).filter(p=>!p.tbl).forEach(p=>runs(p).forEach(r=>{const t=[...r.getElementsByTagName('w:t')].map(x=>x.textContent).join('');const m=t.match(FOREIGN);if(m&&gR(doc,p.el,r,tog('w:i'))!==1)it.add(m[0].toLowerCase())}));
+ add(R,G,it.size?'warn':'ok','Istilah asing dicetak miring',it.size?'Istilah berikut belum dicetak miring. Cek manual, karena sebagian mungkin sudah baku atau punya padanan: '+[...it].join(', ')+'.':'Tidak ada istilah asing umum yang belum miring.');
+}
+
+/* ---------- Teks ---------- */
+function checkStruct(paras,R){
+ const G='Sistematika laporan',H=paras.map(t=>t.trim()).filter(t=>t&&t.length<100&&!/\.{4,}|\s\d+\s*$/.test(t));
+ const sub=n=>new RegExp('^([a-e]\\.\\s*)?'+n+'$','i');
+ const need=[['Kata Pengantar',/^kata pengantar$/i],['Daftar Isi',/^daftar isi$/i],['Daftar Tabel',/^daftar tabel$/i],['Daftar Gambar',/^daftar gambar$/i],
+ ['BAB I',/^bab\s+i(\s|$)/i],['Latar Belakang',sub('latar belakang')],['Tujuan',sub('tujuan')],['Manfaat',sub('manfaat')],['Landasan Teori',sub('landasan teori')],['Kerangka Berpikir',sub('kerangka berpikir')],
+ ['BAB II',/^bab\s+ii(\s|$)/i],['Pemodelan Bisnis',sub('pemodelan bisnis')],['Analisis Masalah',sub('analisis masalah')],['BAB III',/^bab\s+iii(\s|$)/i],['BAB IV',/^bab\s+iv(\s|$)/i],
+ ['Kesimpulan',sub('kesimpulan(\\s+dan\\s+saran)?')],['Saran',sub('saran')],['Daftar Pustaka',/^daftar pustaka$/i],['Daftar Riwayat Hidup',/^daftar riwayat hidup$/i]];
+ const miss=need.filter(([,re])=>!H.some(h=>re.test(h))).map(n=>n[0]);
+ add(R,G,miss.length?'warn':'ok','Bagian wajib laporan',miss.length?'Judul berikut tidak ditemukan sebagai baris tersendiri: '+miss.join(', ')+'. Mungkin namanya berbeda atau tergabung dalam satu baris.':'Semua bagian wajib (awal, BAB I–IV, akhir) ditemukan.');
+}
+const DICT='aktifitas>aktivitas|efektifitas>efektivitas|produktifitas>produktivitas|kreatifitas>kreativitas|analisa>analisis|resiko>risiko|ijin>izin|nasehat>nasihat|sistim>sistem|praktek>praktik|apotik>apotek|hakekat>hakikat|merubah>mengubah|rubah>ubah|kwalitas>kualitas|kwantitas>kuantitas|frekwensi>frekuensi|tehnologi>teknologi|tehnik>teknik|obyek>objek|subyek>subjek|obyektif>objektif|mengkonsumsi>mengonsumsi|mempengaruhi>memengaruhi|menterjemahkan>menerjemahkan|dikarenakan>karena|silahkan>silakan|standarisasi>standardisasi|azas>asas|handal>andal|sekedar>sekadar|antri>antre|trend>tren|dimana>di mana|diantara>di antara|disamping>di samping|dibawah>di bawah|diatas>di atas|didalam>di dalam|kedalam>ke dalam|karna>karena|nopember>November|yg>yang|dgn>dengan|utk>untuk|dlm>dalam|tdk>tidak|krn>karena|sbg>sebagai|gak>tidak|nggak>tidak';
+const STEM='buat|tulis|lakukan|gunakan|ambil|tentukan|susun|bahas|kembangkan|rancang|olah|berikan|ajukan|kumpulkan|simpulkan|sajikan|ukur|hitung|lihat|pilih|jelaskan|sebut|tetapkan|sampaikan|bandingkan|terapkan|tingkatkan|kerjakan|simpan|bentuk|tambah|ubah';
+function scan(B,re){let n=0;const ex=[];B.forEach(t=>{re.lastIndex=0;let m;while((m=re.exec(t))){n++;if(ex.length<4){const a=Math.max(0,m.index-25);ex.push('…'+t.slice(a,m.index+m[0].length+25).replace(/\s+/g,' ')+'…')}if(!m[0])re.lastIndex++}});return{n,ex}}
+function checkText(paras,R){
+ const G='Tata bahasa & typo',P=pustakaLines(paras),B=paras.slice(0,P?P.i:paras.length).filter(t=>t.trim());
+ const con=[];B.filter(t=>t.length>=60).forEach(t=>(t.match(/[^.!?]+[.!?]+(\s|$)/g)||[]).forEach(s=>{s=s.trim();if(/^(oleh karena itu|sehingga|dan|yang|sedangkan|serta|tetapi|atau|jadi)(\s|,)/i.test(s))con.push(snip(s,90))}));
+ add(R,G,con.length?'bad':'ok','Kalimat diawali kata penghubung',con.length?`${con.length} kalimat diawali kata penghubung (oleh karena itu, sehingga, dan, yang, sedangkan, dll.).`:'Tidak ditemukan kalimat diawali kata penghubung.',con.slice(0,4));
+ const found={};
+ DICT.split('|').forEach(p=>{const[a,b]=p.split('>'),re=new RegExp('(?<![\\p{L}])'+a+'(?![\\p{L}])','giu');B.forEach(t=>{const m=t.match(re);if(m)(found[a]=found[a]||{b,n:0}).n+=m.length})});
+ const fk=Object.keys(found);
+ add(R,G,fk.length?'bad':'ok','Kata tidak baku / singkatan tidak formal',fk.length?`${fk.length} jenis kata ditemukan. Perbaiki sesuai KBBI/EYD.`:'Tidak ada kata dari daftar tidak baku yang ditemukan (daftar terbatas).',fk.slice(0,12).map(a=>`${a} → ${found[a].b} (${found[a].n}×)`));
+ const chk=(t,re,h,okm,s)=>{const r=scan(B,re);add(R,G,r.n?(s||'bad'):'ok',t,r.n?`${r.n} temuan. ${h}`:okm,r.ex)};
+ chk('Awalan “di-” terpisah',new RegExp('(?<![\\p{L}])di\\s('+STEM+')(kan|i)?(?![\\p{L}])','giu'),'Awalan di- untuk kata kerja ditulis serangkai (dibuat, ditulis).','Tidak ditemukan.','warn');
+ chk('Kata ganda berurutan',/(?<![\p{L}])([\p{L}]{3,})\s+\1(?![\p{L}])/giu,'Kemungkinan kata terketik dua kali.','Tidak ditemukan.','warn');
+ chk('Spasi ganda / spasi sebelum tanda baca',/\S {2,}\S|\S [,;:?!](?!\d)/g,'Hapus spasi berlebih.','Tidak ditemukan.','warn');
+ chk('Tanda baca tanpa spasi sesudahnya',/[\p{L}],[\p{L}]|(?<![\p{L}.])[\p{L}]{3,}\.[A-Z][a-z]+(?!\.)/gu,'Beri spasi setelah koma atau titik.','Tidak ditemukan.','warn');
+ chk('Penulisan “Tabel/Gambar” saat dirujuk',/(?<![\p{L}])(tabel|gambar)\s+\d+\.\d+/gu,'Kata “Tabel” dan “Gambar” diawali huruf kapital (Tabel 2.1).','Sesuai.');
+}
+function checkCite(paras,R,thn,jdl){
+ const G='Kutipan & Daftar Pustaka',P=pustakaLines(paras),B=paras.slice(0,P?P.i:paras.length).filter(t=>t.trim());
+ const sp=scan(B,/\(\d{4}[a-z]?\s*:\s+\d+|\(\d{4}[a-z]?\s+:\s*\d+/g),ok=scan(B,/\(\d{4}[a-z]?:\d+(-\d+)?\)/g),apa=scan(B,/\([A-Z][^()]{1,60},\s*\d{4}[a-z]?\)/g);
+ if(sp.n)add(R,G,'bad','Spasi pada kutipan (tahun:halaman)',`${sp.n} temuan. Tulis tanpa spasi, mis. (2014:6).`,sp.ex);
+ if(apa.n)add(R,G,'warn','Kutipan gaya (Nama, tahun)',`${apa.n} kutipan memakai gaya APA dalam tanda kurung. Contoh di pedoman memakai “Menurut Royan (2014:6)”. Tanyakan ke dosen pembimbing gaya mana yang dipakai.`,apa.ex);
+ if(!sp.n&&!apa.n)add(R,G,ok.n?'ok':'warn','Format kutipan',ok.n?`${ok.n} kutipan berformat (tahun:halaman) ditemukan.`:'Tidak ditemukan kutipan berformat Nama (tahun:halaman).');
+ if(jdl){const w=jdl.trim().split(/\s+/).length;add(R,'Judul',w>15?'bad':'ok','Panjang judul',`${w} kata. ${w>15?'Maksimal 15 kata.':'Dalam batas maksimal 15 kata.'}`)}
+ if(!P)return add(R,G,'warn','Daftar Pustaka','Judul “DAFTAR PUSTAKA” tidak ditemukan sebagai baris tersendiri, sehingga bagian ini tidak dapat diperiksa.');
+ const E=P.lines.filter(l=>/\b(19|20)\d{2}\b/.test(l));
+ add(R,G,E.length>=10?'ok':'bad','Jumlah pustaka',`${E.length} pustaka terdeteksi (minimal 10, termasuk 2 pustaka metodologi penelitian). Pustaka yang tidak memuat tahun tidak terhitung.`);
+ const met=E.filter(l=>/metodologi|metode penelitian|research method/i.test(l)).length;
+ add(R,G,met>=2?'ok':'warn','Pustaka metodologi penelitian',`${met} pustaka dengan kata “metodologi/metode penelitian” pada judulnya (minimal 2). Cek manual jika judulnya berbeda.`);
+ const bad=E.filter(l=>/&/.test(l)||/\bet al\b/i.test(l)),nb=E.filter(l=>/^\d+[.)]\s/.test(l));
+ add(R,G,bad.length?'bad':'ok','Simbol “&” dan “et al.”',bad.length?`${bad.length} pustaka memakai “&” atau “et al.”. Gunakan kata “dan” dan tulis semua penulis.`:'Tidak ditemukan.',bad.slice(0,3).map(l=>snip(l)));
+ if(nb.length)add(R,G,'bad','Penomoran daftar pustaka',`${nb.length} pustaka diberi nomor urut. Daftar pustaka disusun alfabetis tanpa nomor.`,nb.slice(0,3).map(l=>snip(l)));
+ const K=E.filter(l=>!/^_/.test(l)).map(l=>l.replace(/^[^\p{L}]+/u,'')),inv=[];
+ for(let i=1;i<K.length;i++)if(K[i-1].toLowerCase().localeCompare(K[i].toLowerCase(),'id')>0)inv.push(`“${snip(K[i-1],35)}” berada sebelum “${snip(K[i],35)}”`);
+ add(R,G,inv.length?'bad':'ok','Urutan alfabetis',inv.length?`${inv.length} pasangan tidak berurutan.`:'Urutan alfabetis sesuai.',inv.slice(0,3));
+ const old=E.filter(l=>{const y=+(l.match(/\b(19|20)\d{2}\b/)||[0])[0];return y&&y<thn-5});
+ add(R,G,old.length?'warn':'ok','Tahun terbit (maksimal 5 tahun terakhir)',old.length?`${old.length} pustaka terbit sebelum ${thn-5}. Peraturan perundang-undangan atau teori dasar mungkin dikecualikan oleh dosen pembimbing.`:`Semua pustaka terbit ${thn-5} atau sesudahnya.`,old.slice(0,4).map(l=>snip(l)));
+}
+
+/* ---------- Jalankan & tampilkan ---------- */
+async function run(){
+ let paras=[],doc=null;
+ try{
+  if(mode==='docx'){const f=$('#file').files[0];
+   if(!f)return msg('Pilih file .docx terlebih dahulu.');
+   if(!/\.docx$/i.test(f.name))return msg('Hanya file .docx yang didukung. Untuk PDF, salin teksnya ke mode tempel teks.');
+   doc=await readDocx(f);paras=doc.paras.map(p=>p.text)}
+  else{const t=$('#txt').value;if(t.trim().length<200)return msg('Tempel teks laporan terlebih dahulu (minimal beberapa paragraf).');paras=t.split(/\r?\n/)}
+ }catch(e){return msg('File tidak dapat dibaca. Pastikan berupa .docx asli (bukan .doc yang diganti nama) dan tidak diberi sandi.')}
+ const R=[],thn=+$('#thn').value||new Date().getFullYear();
+ if(doc)checkFormat(doc,R);else add(R,'Format dokumen (.docx)','info','Format huruf, margin, spasi, dan indentasi','Hanya bisa diperiksa dari file .docx. Mode tempel teks memeriksa bahasa, kutipan, dan daftar pustaka.');
+ checkStruct(paras,R);checkText(paras,R);checkCite(paras,R,thn,$('#jdl').value);
+ RES=R;render(R);
+}
+function render(R){
+ const L={ok:'Sesuai',warn:'Perlu dicek',bad:'Temuan',info:'Info'},c=s=>R.filter(r=>r.s===s).length,gs=[...new Set(R.map(r=>r.g))];
+ $('#out').innerHTML=`<div class="sum"><span style="color:var(--bad)">${c('bad')} temuan</span><span style="color:var(--warn)">${c('warn')} perlu dicek</span><span style="color:var(--ok)">${c('ok')} sesuai</span></div>`+
+ gs.map(g=>`<h2>${esc(g)}</h2>`+R.filter(r=>r.g===g).map(r=>`<article class="it s-${r.s}"><h3>${esc(r.t)}<span class="tag">${L[r.s]}</span></h3><p>${esc(r.d)}</p>${r.ex.length?'<ul>'+r.ex.map(e=>`<li>${esc(e)}</li>`).join('')+'</ul>':''}</article>`).join('')).join('')+
+ `<p class="hint">Ingat: ini pemeriksaan otomatis yang terbatas. Tetap periksa ulang laporan Anda dan konsultasikan dengan dosen pembimbing.</p>`;
+ $('#exp').hidden=false;$('#cp').textContent='Salin ringkasan';
+}
+</script>
+</body>
+</html>
