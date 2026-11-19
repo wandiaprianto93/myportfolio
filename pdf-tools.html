@@ -5,76 +5,193 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Alat PDF Gratis – Gabung, Kompres, Edit | Borneo Tech Studio</title>
 <meta name="description" content="Gabung, pisah, kompres, putar, hapus halaman PDF dan ubah gambar ke PDF. Gratis, tanpa watermark, tanpa batas, file tidak diunggah ke server.">
+<meta name="theme-color" content="#0a0a0a">
+<link rel="icon" type="image/png" href="img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f6f7f9;--card:#fff;--text:#1b1f24;--muted:#5d6672;--line:#e1e5ea;--brand:#0f766e;--brand-d:#0b5a54;--soft:#e6f4f2;--warn:#b45309;--err:#b91c1c}
-@media (prefers-color-scheme:dark){:root{--bg:#0f1316;--card:#171c20;--text:#e8ecef;--muted:#9aa5b0;--line:#2a3138;--brand:#2dd4bf;--brand-d:#5eead4;--soft:#12302d;--warn:#fbbf24;--err:#f87171}}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-.wrap{max-width:760px;margin:0 auto;padding:0 16px 48px}
-header{padding:28px 0 12px}
-h1{font-size:1.6rem;margin:0 0 6px;line-height:1.25}
-header p{margin:0;color:var(--muted)}
-.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
-.badge{background:var(--soft);color:var(--brand-d);font-size:.8rem;padding:4px 10px;border-radius:999px;font-weight:600}
-.tabs{display:flex;gap:8px;overflow-x:auto;padding:14px 0 10px;scrollbar-width:none}
-.tabs::-webkit-scrollbar{display:none}
-.tab{flex:0 0 auto;border:1px solid var(--line);background:var(--card);color:var(--text);padding:9px 14px;border-radius:10px;font:inherit;font-size:.92rem;cursor:pointer}
-.tab[aria-selected=true]{background:var(--brand);border-color:var(--brand);color:#fff;font-weight:600}
-@media (prefers-color-scheme:dark){.tab[aria-selected=true]{color:#06201d}}
-.panel{display:none;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
-.panel.on{display:block}
-.panel h2{margin:0 0 4px;font-size:1.15rem}
-.panel .desc{margin:0 0 14px;color:var(--muted);font-size:.92rem}
-.drop{border:2px dashed var(--line);border-radius:12px;padding:26px 14px;text-align:center;cursor:pointer;color:var(--muted);transition:.15s}
-.drop:hover,.drop.over{border-color:var(--brand);background:var(--soft);color:var(--text)}
-.drop b{color:var(--text)}
-.drop input{display:none}
-.list{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
-.item{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--bg)}
-.item .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.92rem}
-.item .sz{color:var(--muted);font-size:.8rem;flex:none}
-.ib{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:8px;width:32px;height:32px;cursor:pointer;font-size:.95rem;flex:none}
-.ib:hover{border-color:var(--brand)}
-.row{display:flex;flex-direction:column;gap:6px;margin-top:14px}
-.row label{font-weight:600;font-size:.9rem}
-.row .hint{color:var(--muted);font-size:.8rem;font-weight:400}
-input[type=text],select{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--text);font:inherit}
-.radios{display:flex;flex-wrap:wrap;gap:8px}
-.radios label{font-weight:500;border:1px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;display:flex;gap:6px;align-items:center}
-.radios input:checked+span{color:var(--brand-d);font-weight:700}
-.go{margin-top:16px;width:100%;border:0;border-radius:12px;background:var(--brand);color:#fff;padding:13px;font:inherit;font-weight:700;cursor:pointer}
-@media (prefers-color-scheme:dark){.go{color:#06201d}}
-.go:disabled{opacity:.5;cursor:not-allowed}
-.go:not(:disabled):hover{background:var(--brand-d)}
-.status{margin-top:12px;font-size:.9rem;min-height:1.2em}
-.status.err{color:var(--err)}
-.status.warn{color:var(--warn)}
-.bar{height:6px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:8px;display:none}
-.bar i{display:block;height:100%;width:0;background:var(--brand);transition:width .2s}
-.result{display:none;margin-top:14px;border:1px solid var(--brand);background:var(--soft);border-radius:12px;padding:14px}
-.result.on{display:block}
-.result .t{font-weight:700;margin-bottom:2px}
-.result .m{color:var(--muted);font-size:.88rem;margin-bottom:10px}
-.dlb{display:inline-block;border:0;border-radius:10px;background:var(--brand);color:#fff;padding:10px 18px;font:inherit;font-weight:700;cursor:pointer}
-@media (prefers-color-scheme:dark){.dlb{color:#06201d}}
-.sup{margin-top:24px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
-.sup.hl{border-color:var(--brand);box-shadow:0 0 0 3px var(--soft)}
-.sup img{width:150px;height:150px;object-fit:contain;border-radius:10px;border:1px solid var(--line);background:#fff}
-.sup .ph{width:150px;height:150px;border:2px dashed var(--line);border-radius:10px;display:none;align-items:center;justify-content:center;text-align:center;font-size:.75rem;color:var(--muted);padding:8px}
-.sup h3{margin:0 0 4px;font-size:1.05rem}
-.sup p{margin:0;color:var(--muted);font-size:.92rem}
-.sup .tx{flex:1;min-width:200px}
-.priv{margin-top:20px;color:var(--muted);font-size:.85rem}
-footer{margin-top:24px;text-align:center;color:var(--muted);font-size:.8rem}
+    :root { --bg: #ffffff; --panel: #eef3fb; --ink: #0a0a0a; --ink-soft: #475569; --line: #dbe3ef; --sun: #2563eb; --sun-soft: #dbe7ff; --river: #1d4ed8; --deep: #0a0a0a; --on-deep: #f5f5f5; --on-deep-soft: #a3a3a3; --radius: 14px; --wrap: 1120px; --err: #b91c1c; --warn: #b45309; }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+    body { background: var(--bg); color: var(--ink); font-family: 'Instrument Sans', system-ui, sans-serif; font-size: 17px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    h1, h2, h3 { font-family: 'Bricolage Grotesque', 'Instrument Sans', sans-serif; line-height: 1.1; letter-spacing: -0.02em; }
+    a { color: inherit; }
+    img { display: block; max-width: 100%; }
+    :focus-visible { outline: 3px solid var(--river); outline-offset: 3px; border-radius: 6px; }
+    .wrap { width: min(var(--wrap), 100% - 40px); margin-inline: auto; }
+    .narrow { max-width: 820px; }
+
+    /* ---------- Buttons ---------- */
+    .btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 24px; border-radius: 999px; font-weight: 600; font-size: 16px; text-decoration: none; border: 2px solid transparent; transition: transform .15s ease, background .15s ease, color .15s ease; cursor: pointer; }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-sun { background: #25D366; color: #0a0a0a; }
+    .btn-sun:hover { background: #3ee07f; }
+
+    /* ---------- Header ---------- */
+    header.top { position: sticky; top: 0; z-index: 50; background: rgba(255, 255, 255, .92); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+    .top .wrap { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+    .brand { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 20px; letter-spacing: -0.02em; text-decoration: none; display: flex; align-items: center; gap: 10px; }
+    .brand img { height: 38px; width: auto; flex: none; }
+    nav.main { display: flex; align-items: center; gap: 28px; }
+    nav.main a { text-decoration: none; font-weight: 500; font-size: 15px; }
+    nav.main a:not(.btn):hover { color: var(--river); }
+    nav.main .btn { padding: 10px 18px; font-size: 15px; }
+
+    /* Dropdown Alat Bantu */
+    .dd { position: relative; }
+    .dd-btn { font: inherit; font-weight: 500; font-size: 15px; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+    .dd-btn:hover { color: var(--river); }
+    .dd-btn svg { width: 14px; height: 14px; transition: transform .15s ease; }
+    .dd-btn[aria-expanded="true"] svg { transform: rotate(180deg); }
+    .dd-list { position: absolute; top: calc(100% + 14px); left: 0; width: 280px; max-width: calc(100vw - 40px); list-style: none; padding: 6px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: 0 12px 28px rgba(10, 10, 10, .12); }
+    .dd-list[hidden] { display: none; }
+    nav.main .dd-list a { display: block; padding: 10px 12px; border-radius: 8px; line-height: 1.4; }
+    nav.main .dd-list a:hover { background: var(--panel); }
+    nav.main .dd-list a[aria-current="page"] { background: var(--sun-soft); color: var(--river); font-weight: 600; }
+
+    .menu-btn { display: none; background: none; border: 2px solid var(--ink); border-radius: 10px; width: 44px; height: 44px; cursor: pointer; color: var(--ink); }
+    .menu-btn svg { width: 22px; height: 22px; margin: auto; }
+
+    /* ---------- Judul halaman ---------- */
+    .page-head { padding: 56px 0 24px; }
+    .page-head h1 { font-size: clamp(2.2rem, 5vw, 3.6rem); font-weight: 800; margin-bottom: 14px; }
+    .page-head .lead { font-size: 18px; color: var(--ink-soft); max-width: 560px; margin-bottom: 22px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 10px; }
+    .chips span { padding: 7px 16px; border: 2px solid var(--ink); border-radius: 999px; font-weight: 600; font-size: 14px; background: #fff; }
+
+    /* ---------- Alat ---------- */
+    .tools { padding-bottom: 72px; }
+    .tabs { display: flex; gap: 10px; overflow-x: auto; padding: 6px 4px 18px 0; scrollbar-width: none; }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tab { flex: 0 0 auto; border: 2px solid var(--ink); background: #fff; color: var(--ink); padding: 10px 18px; border-radius: 999px; font: inherit; font-weight: 600; font-size: 15px; cursor: pointer; transition: background .15s ease, color .15s ease; }
+    .tab:hover { background: var(--panel); }
+    .tab[aria-selected=true] { background: var(--ink); color: #fff; }
+
+    .panel { display: none; background: #fff; border: 2px solid var(--ink); border-radius: var(--radius); box-shadow: 8px 8px 0 var(--ink); padding: 26px; margin-right: 8px; }
+    .panel.on { display: block; }
+    .panel h2 { font-size: 1.6rem; font-weight: 700; margin-bottom: 6px; }
+    .panel .desc { margin-bottom: 18px; color: var(--ink-soft); font-size: 16px; }
+
+    .drop { border: 2px dashed #b9c6dc; border-radius: var(--radius); padding: 32px 16px; text-align: center; cursor: pointer; color: var(--ink-soft); transition: .15s; }
+    .drop:hover, .drop.over { border-color: var(--sun); background: var(--sun-soft); color: var(--ink); }
+    .drop b { color: var(--ink); }
+    .drop input { display: none; }
+
+    .list { list-style: none; margin-top: 14px; display: flex; flex-direction: column; gap: 8px; }
+    .item { display: flex; align-items: center; gap: 8px; border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; background: var(--panel); }
+    .item .nm { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 15px; font-weight: 500; }
+    .item .sz { color: var(--ink-soft); font-size: 13px; flex: none; }
+    .ib { border: 1px solid var(--line); background: #fff; color: var(--ink); border-radius: 8px; width: 34px; height: 34px; cursor: pointer; font-size: 15px; flex: none; }
+    .ib:hover { border-color: var(--ink); }
+
+    .row { display: flex; flex-direction: column; gap: 8px; margin-top: 18px; }
+    .row label { font-weight: 600; font-size: 15px; }
+    .row .hint { color: var(--ink-soft); font-size: 13px; font-weight: 400; }
+    input[type=text], select { width: 100%; padding: 11px 14px; border: 2px solid var(--line); border-radius: 10px; background: #fff; color: var(--ink); font: inherit; }
+    input[type=text]:focus, select:focus { border-color: var(--sun); outline: none; }
+    .radios { display: flex; flex-wrap: wrap; gap: 8px; }
+    .radios label { font-weight: 500; border: 2px solid var(--line); border-radius: 999px; padding: 8px 16px; cursor: pointer; display: flex; gap: 8px; align-items: center; transition: border-color .15s ease; }
+    .radios label:hover { border-color: var(--ink); }
+    .radios label:has(input:checked) { border-color: var(--ink); background: var(--panel); }
+    .radios input { accent-color: var(--sun); }
+    .radios input:checked + span { font-weight: 700; }
+
+    .go { margin-top: 20px; width: 100%; border: 0; border-radius: 999px; background: var(--sun); color: #fff; padding: 15px; font: inherit; font-weight: 600; font-size: 16px; cursor: pointer; transition: transform .15s ease, background .15s ease; }
+    .go:disabled { opacity: .45; cursor: not-allowed; }
+    .go:not(:disabled):hover { background: var(--river); transform: translateY(-2px); }
+
+    .status { margin-top: 14px; font-size: 15px; min-height: 1.2em; color: var(--ink-soft); }
+    .status.err { color: var(--err); font-weight: 500; }
+    .status.warn { color: var(--warn); font-weight: 500; }
+    .bar { height: 8px; background: var(--line); border-radius: 99px; overflow: hidden; margin-top: 10px; display: none; }
+    .bar i { display: block; height: 100%; width: 0; background: var(--sun); transition: width .2s; }
+
+    .result { display: none; margin-top: 16px; border: 2px solid var(--sun); background: var(--sun-soft); border-radius: var(--radius); padding: 16px 18px; }
+    .result.on { display: block; }
+    .result .t { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 1.2rem; margin-bottom: 2px; }
+    .result .m { color: var(--ink-soft); font-size: 15px; margin-bottom: 12px; }
+    .dlb { display: inline-block; border: 0; border-radius: 999px; background: var(--ink); color: #fff; padding: 11px 24px; font: inherit; font-weight: 600; cursor: pointer; transition: background .15s ease; }
+    .dlb:hover { background: var(--river); }
+
+    /* Dukungan / sawer */
+    .sup { margin-top: 44px; background: var(--deep); color: var(--on-deep); border-radius: var(--radius); padding: 28px; display: flex; gap: 24px; align-items: center; flex-wrap: wrap; transition: box-shadow .2s ease; }
+    .sup.hl { box-shadow: 0 0 0 4px var(--sun); }
+    .sup img { width: 160px; height: 160px; object-fit: contain; border-radius: 12px; background: #fff; padding: 6px; }
+    .sup .ph { width: 160px; height: 160px; border: 2px dashed #525252; border-radius: 12px; display: none; align-items: center; justify-content: center; text-align: center; font-size: 13px; color: var(--on-deep-soft); padding: 10px; }
+    .sup .tx { flex: 1; min-width: 220px; }
+    .sup h3 { font-size: 1.5rem; font-weight: 800; color: #fff; margin-bottom: 8px; }
+    .sup p { color: var(--on-deep-soft); font-size: 16px; }
+    .priv { margin-top: 22px; color: var(--ink-soft); font-size: 15px; }
+    .priv b { color: var(--ink); }
+
+    footer { background: #000000; color: var(--on-deep-soft); padding: 28px 0; font-size: 14px; }
+    footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; }
+
+    /* ---------- Responsif ---------- */
+    @media (max-width: 720px) {
+      body { font-size: 16px; }
+      .menu-btn { display: flex; }
+      nav.main { display: none; position: absolute; top: 68px; left: 0; right: 0; flex-direction: column; align-items: stretch; gap: 0; background: var(--bg); border-bottom: 1px solid var(--line); padding: 8px 20px 20px; }
+      nav.main.open { display: flex; }
+      nav.main a:not(.btn) { padding: 14px 0; border-bottom: 1px solid var(--line); }
+      nav.main .btn { margin-top: 16px; justify-content: center; }
+      .dd { border-bottom: 1px solid var(--line); }
+      .dd-btn { width: 100%; justify-content: space-between; padding: 14px 0; }
+      .dd-list { position: static; width: auto; max-width: none; box-shadow: none; border: 0; border-radius: 0; background: transparent; padding: 0 0 10px 14px; }
+      nav.main .dd-list a:not(.btn) { padding: 10px 0; border-bottom: 0; }
+      nav.main .dd-list a[aria-current="page"] { background: none; }
+      .page-head { padding: 36px 0 16px; }
+      .panel { padding: 18px; box-shadow: 5px 5px 0 var(--ink); margin-right: 5px; }
+      .sup { padding: 22px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .btn, .go, .tab { transition: none; }
+    }
 </style>
 </head>
 <body>
-<div class="wrap">
-<header>
-  <h1>Alat PDF Gratis</h1>
-  <p>Gabung, pisah, kompres, dan edit PDF langsung di browser kamu.</p>
-  <div class="badges"><span class="badge">Gratis</span><span class="badge">Tanpa watermark</span><span class="badge">Tanpa batas</span><span class="badge">File tidak diunggah</span></div>
-</header>
+
+  <header class="top">
+    <div class="wrap">
+      <a href="index.html" class="brand"><img src="img/logo.png" alt="" width="46" height="38">Borneo Tech Studio</a>
+
+      <button class="menu-btn" id="menuBtn" aria-label="Buka menu" aria-expanded="false" aria-controls="mainNav">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16" />
+        </svg>
+      </button>
+
+      <nav class="main" id="mainNav">
+        <a href="index.html#layanan">Layanan</a>
+        <a href="index.html#proses">Cara kerja</a>
+        <a href="index.html#portofolio">Portofolio</a>
+        <div class="dd">
+          <button type="button" class="dd-btn" aria-expanded="false" aria-controls="ddAlat">
+            Alat Bantu
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg>
+          </button>
+          <ul class="dd-list" id="ddAlat" hidden>
+            <li><a href="pdf-tools.html" aria-current="page">PDF Tools (Gabung, Kompress, Edit, Gambar ke PDF)</a></li>
+          </ul>
+        </div>
+        <a href="index.html#faq">Tanya jawab</a>
+        <a class="btn btn-sun" href="https://wa.me/6285250878278?text=Halo%20Borneo%20Tech%20Studio%2C%20saya%20ingin%20konsultasi%20pembuatan%20website%2Faplikasi%20untuk%20bisnis%20saya." target="_blank" rel="noopener">Chat WhatsApp</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="page-head">
+    <div class="wrap narrow">
+      <h1>PDF Tools</h1>
+      <p class="lead">Gabung, pisah, kompres, dan edit PDF langsung di browser kamu. Gratis dan file tidak diunggah ke server.</p>
+      <div class="chips"><span>Gratis</span><span>Tanpa watermark</span><span>Tanpa batas</span><span>File tidak diunggah</span></div>
+    </div>
+  </section>
+
+  <main class="wrap narrow tools">
+
 
 <div class="tabs" role="tablist">
   <button class="tab" role="tab" data-tab="merge" aria-selected="true">Gabung PDF</button>
@@ -170,8 +287,14 @@ footer{margin-top:24px;text-align:center;color:var(--muted);font-size:.8rem}
 </div>
 
 <p class="priv"><b>Privasi:</b> semua proses berjalan di perangkatmu sendiri. File PDF dan gambar kamu tidak dikirim ke server mana pun, jadi aman dipakai untuk dokumen pribadi.</p>
-<footer>© <span id="yr"></span> Borneo Tech Studio</footer>
-</div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span>&copy; <span id="yr">2026</span> Borneo Tech Studio. Hak cipta dilindungi.</span>
+      <span>Pontianak, Kalimantan Barat</span>
+    </div>
+  </footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -380,6 +503,19 @@ $('#go-img').addEventListener('click',()=>run('img',$('#go-img'),async()=>{
   progress('img',null);status('img','');
   showResult('img','PDF berhasil dibuat',out.getPageCount()+' halaman · '+fmt(bytes.length),bytes,'gambar.pdf');
 }));
+
+/* ---------- menu header ---------- */
+(function(){
+  var btn=document.getElementById('menuBtn'),nav=document.getElementById('mainNav');
+  function setMenu(o){nav.classList.toggle('open',o);btn.setAttribute('aria-expanded',o?'true':'false');}
+  btn.addEventListener('click',function(){setMenu(!nav.classList.contains('open'));});
+  nav.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){setMenu(false);});});
+  var ddBtn=document.querySelector('.dd-btn'),ddList=document.getElementById('ddAlat');
+  function setDd(o){ddBtn.setAttribute('aria-expanded',o?'true':'false');ddList.hidden=!o;}
+  ddBtn.addEventListener('click',function(e){e.stopPropagation();setDd(ddBtn.getAttribute('aria-expanded')!=='true');});
+  document.addEventListener('click',function(e){if(!ddList.contains(e.target))setDd(false);});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'){setDd(false);ddBtn.focus();}});
+})();
 </script>
 </body>
 </html>
