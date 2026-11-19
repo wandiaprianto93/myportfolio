@@ -128,6 +128,17 @@
     footer { background: #000000; color: var(--on-deep-soft); padding: 28px 0; font-size: 14px; }
     footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; }
 
+    /* Konversi Word: wadah render di luar layar */
+    #w-render { position: absolute; left: -99999px; top: 0; font-size: medium; line-height: normal; color: #000; }
+    #w-render img { max-width: none; }
+    @media print {
+      body.print-word > :not(#w-render) { display: none !important; }
+      body.print-word #w-render { position: static !important; left: auto !important; }
+      body.print-word .docx-wrapper { background: none !important; padding: 0 !important; display: block !important; }
+      body.print-word .docx-wrapper > section.docx { box-shadow: none !important; margin: 0 !important; break-after: page; page-break-after: always; }
+      body.print-word .docx-wrapper > section.docx:last-child { break-after: auto; page-break-after: auto; }
+    }
+
     /* ---------- Responsif ---------- */
     @media (max-width: 720px) {
       body { font-size: 16px; }
@@ -195,13 +206,14 @@
 
 <div class="tabs" role="tablist">
   <button class="tab" role="tab" data-tab="compress" aria-selected="true">Kompres PDF</button>
+  <button class="tab" role="tab" data-tab="word" aria-selected="false">Ubah Word ke PDF</button>
   <button class="tab" role="tab" data-tab="img" aria-selected="false">Ubah Gambar ke PDF</button>
   <button class="tab" role="tab" data-tab="merge" aria-selected="false">Gabung Beberapa PDF</button>
   <button class="tab" role="tab" data-tab="pages" aria-selected="false">Edit Halaman</button>
 </div>
 
 <!-- GABUNG -->
-<section class="panel on" id="p-merge">
+<section class="panel" id="p-merge">
   <h2>Gabung PDF</h2>
   <p class="desc">Satukan beberapa PDF jadi satu. Atur urutan dengan tombol panah.</p>
   <div class="drop" id="d-merge"><b>Klik untuk pilih file</b> atau seret PDF ke sini<input type="file" accept="application/pdf,.pdf" multiple></div>
@@ -213,7 +225,7 @@
 </section>
 
 <!-- KOMPRES -->
-<section class="panel" id="p-compress">
+<section class="panel on" id="p-compress">
   <h2>Kompres PDF</h2>
   <p class="desc">Perkecil ukuran PDF untuk upload ke portal, email, atau WhatsApp.</p>
   <div class="drop" id="d-compress"><b>Klik untuk pilih file</b> atau seret PDF ke sini<input type="file" accept="application/pdf,.pdf"></div>
@@ -261,6 +273,26 @@
   <div class="result" id="r-pages"></div>
 </section>
 
+<!-- WORD KE PDF -->
+<section class="panel" id="p-word">
+  <h2>Ubah Word ke PDF</h2>
+  <p class="desc">Ubah dokumen Word (.docx) menjadi PDF. Diproses di browser kamu, file tidak diunggah.</p>
+  <div class="drop" id="d-word"><b>Klik untuk pilih file</b> atau seret file Word (.docx) ke sini<input type="file" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document"></div>
+  <ul class="list" id="l-word"></ul>
+  <div class="row">
+    <label>Cara menyimpan</label>
+    <div class="radios" id="m-word">
+      <label><input type="radio" name="wm" value="img" checked><span>Unduh langsung</span></label>
+      <label><input type="radio" name="wm" value="print"><span>Cetak ke PDF (teks bisa diseleksi)</span></label>
+    </div>
+    <span class="hint"><b>Unduh langsung:</b> PDF terunduh otomatis, tetapi tiap halaman berupa gambar sehingga teks tidak bisa diseleksi. <b>Cetak ke PDF:</b> dialog cetak browser terbuka, pilih "Simpan sebagai PDF". Hasilnya lebih tajam dan teksnya bisa diseleksi (disarankan di komputer). Tampilan mengikuti font di perangkatmu, jadi bisa sedikit berbeda dari di Word. Hanya mendukung .docx; untuk file .doc lama, simpan ulang dulu sebagai .docx.</span>
+  </div>
+  <button class="go" id="go-word" disabled>Ubah ke PDF</button>
+  <div class="bar" id="b-word"><i></i></div>
+  <div class="status" id="s-word"></div>
+  <div class="result" id="r-word"></div>
+</section>
+
 <!-- GAMBAR KE PDF -->
 <section class="panel" id="p-img">
   <h2>Gambar ke PDF</h2>
@@ -296,6 +328,8 @@
     </div>
   </footer>
 
+  <div id="w-render" aria-hidden="true"></div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>
@@ -330,7 +364,7 @@ function showResult(id,title,meta,bytes,name,type){
   const s=$('#sup');s.classList.add('hl');setTimeout(()=>s.classList.remove('hl'),4000);
 }
 function clearResult(id){const r=$('#r-'+id);r.classList.remove('on');r.innerHTML='';status(id,'');progress(id,null);}
-function dropzone(id,{pattern,multiple,onFiles}){
+function dropzone(id,{pattern,multiple,onFiles,msg}){
   const d=$('#d-'+id),inp=d.querySelector('input');
   d.addEventListener('click',()=>inp.click());
   inp.addEventListener('click',e=>e.stopPropagation());
@@ -340,7 +374,7 @@ function dropzone(id,{pattern,multiple,onFiles}){
   d.addEventListener('drop',e=>handle([...e.dataTransfer.files]));
   function handle(fs){
     fs=fs.filter(f=>pattern.test(f.type)||pattern.test(f.name));
-    if(!fs.length){status(id,'Tipe file tidak sesuai.','err');return;}
+    if(!fs.length){status(id,msg||'Tipe file tidak sesuai.','err');return;}
     onFiles(multiple?fs:[fs[0]]);
   }
 }
@@ -502,6 +536,75 @@ $('#go-img').addEventListener('click',()=>run('img',$('#go-img'),async()=>{
   const bytes=await out.save();
   progress('img',null);status('img','');
   showResult('img','PDF berhasil dibuat',out.getPageCount()+' halaman · '+fmt(bytes.length),bytes,'gambar.pdf');
+}));
+
+/* ---------- WORD KE PDF ---------- */
+let wFile=null;
+const LIBS={
+  jszip:['https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js','https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js'],
+  docx:['https://cdn.jsdelivr.net/npm/docx-preview@0.3/dist/docx-preview.min.js','https://unpkg.com/docx-preview@0.3/dist/docx-preview.min.js'],
+  h2c:['https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js','https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js']
+};
+function loadScript(urls){
+  return new Promise((resolve,reject)=>{
+    let i=0;
+    (function next(){
+      if(i>=urls.length)return reject(new Error('Gagal memuat pustaka yang dibutuhkan. Periksa koneksi internet lalu coba lagi.'));
+      const sc=document.createElement('script');sc.src=urls[i++];
+      sc.onload=()=>resolve();sc.onerror=()=>{sc.remove();next();};
+      document.head.appendChild(sc);
+    })();
+  });
+}
+async function renderWord(){
+  if(!window.JSZip)await loadScript(LIBS.jszip);
+  if(!window.docx)await loadScript(LIBS.docx);
+  const host=$('#w-render');host.innerHTML='';
+  try{
+    await docx.renderAsync(await wFile.arrayBuffer(),host,host,{className:'docx',inWrapper:true,breakPages:true,ignoreLastRenderedPageBreak:true,renderHeaders:true,renderFooters:true,renderFootnotes:true,renderEndnotes:true,useBase64URL:true});
+  }catch(e){console.error(e);throw new Error('Tidak bisa membaca file. Pastikan formatnya .docx (bukan .doc lama) dan tidak diproteksi password.');}
+  const secs=[...host.querySelectorAll('section.docx')];
+  if(!secs.length)throw new Error('Dokumen kosong atau tidak bisa dibaca.');
+  if(document.fonts&&document.fonts.ready)await document.fonts.ready;
+  await Promise.all([...host.querySelectorAll('img')].map(im=>im.complete?0:new Promise(r=>{im.onload=im.onerror=r;})));
+  return secs;
+}
+dropzone('word',{pattern:/\.docx$|wordprocessingml/i,multiple:false,msg:'Gunakan file Word berformat .docx. Untuk file .doc lama, buka di Word lalu simpan ulang sebagai .docx.',onFiles:fs=>{
+  clearResult('word');wFile=fs[0];
+  renderList('word',[wFile],{movable:false,onChange:()=>{wFile=null;$('#l-word').innerHTML='';$('#go-word').disabled=true;}});
+  $('#go-word').disabled=false;}});
+$('#go-word').addEventListener('click',()=>run('word',$('#go-word'),async()=>{
+  const mode=document.querySelector('input[name=wm]:checked').value;
+  status('word','Membaca dokumen …');progress('word',0.05);
+  const secs=await renderWord();
+  if(mode==='print'){
+    progress('word',null);
+    const st=document.createElement('style');
+    st.textContent='@page{size:'+secs[0].offsetWidth+'px '+secs[0].offsetHeight+'px;margin:0}';
+    document.head.appendChild(st);
+    document.body.classList.add('print-word');
+    const done=()=>{document.body.classList.remove('print-word');st.remove();$('#w-render').innerHTML='';window.removeEventListener('afterprint',done);};
+    window.addEventListener('afterprint',done);
+    status('word','Dialog cetak dibuka. Pada pilihan printer, pilih "Simpan sebagai PDF" lalu simpan.');
+    setTimeout(()=>window.print(),150);
+    return;
+  }
+  if(!window.html2canvas)await loadScript(LIBS.h2c);
+  const out=await PDFLib.PDFDocument.create();
+  for(let i=0;i<secs.length;i++){
+    status('word','Mengubah halaman '+(i+1)+' dari '+secs.length+' …');progress('word',(i+0.1)/secs.length);
+    const sec=secs[i],w=sec.offsetWidth,h=sec.offsetHeight;
+    const cv=await html2canvas(sec,{scale:2,backgroundColor:'#ffffff',useCORS:true,logging:false});
+    const blob=await new Promise(r=>cv.toBlob(r,'image/jpeg',.88));
+    const img=await out.embedJpg(await blob.arrayBuffer());
+    const p=out.addPage([w*0.75,h*0.75]);
+    p.drawImage(img,{x:0,y:0,width:w*0.75,height:h*0.75});
+    cv.width=cv.height=0;
+  }
+  $('#w-render').innerHTML='';
+  const bytes=await out.save();
+  progress('word',null);status('word','');
+  showResult('word','Word berhasil diubah ke PDF',out.getPageCount()+' halaman · '+fmt(bytes.length),bytes,baseName(wFile.name)+'.pdf');
 }));
 
 /* ---------- menu header ---------- */
