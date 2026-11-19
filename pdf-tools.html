@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Alat PDF Gratis – Gabung, Kompres, Edit | Borneo Tech Studio</title>
+<meta name="description" content="Gabung, pisah, kompres, putar, hapus halaman PDF dan ubah gambar ke PDF. Gratis, tanpa watermark, tanpa batas, file tidak diunggah ke server.">
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--text:#1b1f24;--muted:#5d6672;--line:#e1e5ea;--brand:#0f766e;--brand-d:#0b5a54;--soft:#e6f4f2;--warn:#b45309;--err:#b91c1c}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1316;--card:#171c20;--text:#e8ecef;--muted:#9aa5b0;--line:#2a3138;--brand:#2dd4bf;--brand-d:#5eead4;--soft:#12302d;--warn:#fbbf24;--err:#f87171}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px 48px}
+header{padding:28px 0 12px}
+h1{font-size:1.6rem;margin:0 0 6px;line-height:1.25}
+header p{margin:0;color:var(--muted)}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.badge{background:var(--soft);color:var(--brand-d);font-size:.8rem;padding:4px 10px;border-radius:999px;font-weight:600}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:14px 0 10px;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;border:1px solid var(--line);background:var(--card);color:var(--text);padding:9px 14px;border-radius:10px;font:inherit;font-size:.92rem;cursor:pointer}
+.tab[aria-selected=true]{background:var(--brand);border-color:var(--brand);color:#fff;font-weight:600}
+@media (prefers-color-scheme:dark){.tab[aria-selected=true]{color:#06201d}}
+.panel{display:none;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+.panel.on{display:block}
+.panel h2{margin:0 0 4px;font-size:1.15rem}
+.panel .desc{margin:0 0 14px;color:var(--muted);font-size:.92rem}
+.drop{border:2px dashed var(--line);border-radius:12px;padding:26px 14px;text-align:center;cursor:pointer;color:var(--muted);transition:.15s}
+.drop:hover,.drop.over{border-color:var(--brand);background:var(--soft);color:var(--text)}
+.drop b{color:var(--text)}
+.drop input{display:none}
+.list{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
+.item{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--bg)}
+.item .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.92rem}
+.item .sz{color:var(--muted);font-size:.8rem;flex:none}
+.ib{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:8px;width:32px;height:32px;cursor:pointer;font-size:.95rem;flex:none}
+.ib:hover{border-color:var(--brand)}
+.row{display:flex;flex-direction:column;gap:6px;margin-top:14px}
+.row label{font-weight:600;font-size:.9rem}
+.row .hint{color:var(--muted);font-size:.8rem;font-weight:400}
+input[type=text],select{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--text);font:inherit}
+.radios{display:flex;flex-wrap:wrap;gap:8px}
+.radios label{font-weight:500;border:1px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;display:flex;gap:6px;align-items:center}
+.radios input:checked+span{color:var(--brand-d);font-weight:700}
+.go{margin-top:16px;width:100%;border:0;border-radius:12px;background:var(--brand);color:#fff;padding:13px;font:inherit;font-weight:700;cursor:pointer}
+@media (prefers-color-scheme:dark){.go{color:#06201d}}
+.go:disabled{opacity:.5;cursor:not-allowed}
+.go:not(:disabled):hover{background:var(--brand-d)}
+.status{margin-top:12px;font-size:.9rem;min-height:1.2em}
+.status.err{color:var(--err)}
+.status.warn{color:var(--warn)}
+.bar{height:6px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:8px;display:none}
+.bar i{display:block;height:100%;width:0;background:var(--brand);transition:width .2s}
+.result{display:none;margin-top:14px;border:1px solid var(--brand);background:var(--soft);border-radius:12px;padding:14px}
+.result.on{display:block}
+.result .t{font-weight:700;margin-bottom:2px}
+.result .m{color:var(--muted);font-size:.88rem;margin-bottom:10px}
+.dlb{display:inline-block;border:0;border-radius:10px;background:var(--brand);color:#fff;padding:10px 18px;font:inherit;font-weight:700;cursor:pointer}
+@media (prefers-color-scheme:dark){.dlb{color:#06201d}}
+.sup{margin-top:24px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.sup.hl{border-color:var(--brand);box-shadow:0 0 0 3px var(--soft)}
+.sup img{width:150px;height:150px;object-fit:contain;border-radius:10px;border:1px solid var(--line);background:#fff}
+.sup .ph{width:150px;height:150px;border:2px dashed var(--line);border-radius:10px;display:none;align-items:center;justify-content:center;text-align:center;font-size:.75rem;color:var(--muted);padding:8px}
+.sup h3{margin:0 0 4px;font-size:1.05rem}
+.sup p{margin:0;color:var(--muted);font-size:.92rem}
+.sup .tx{flex:1;min-width:200px}
+.priv{margin-top:20px;color:var(--muted);font-size:.85rem}
+footer{margin-top:24px;text-align:center;color:var(--muted);font-size:.8rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>Alat PDF Gratis</h1>
+  <p>Gabung, pisah, kompres, dan edit PDF langsung di browser kamu.</p>
+  <div class="badges"><span class="badge">Gratis</span><span class="badge">Tanpa watermark</span><span class="badge">Tanpa batas</span><span class="badge">File tidak diunggah</span></div>
+</header>
+
+<div class="tabs" role="tablist">
+  <button class="tab" role="tab" data-tab="merge" aria-selected="true">Gabung PDF</button>
+  <button class="tab" role="tab" data-tab="compress" aria-selected="false">Kompres PDF</button>
+  <button class="tab" role="tab" data-tab="pages" aria-selected="false">Edit Halaman</button>
+  <button class="tab" role="tab" data-tab="img" aria-selected="false">Gambar ke PDF</button>
+</div>
+
+<!-- GABUNG -->
+<section class="panel on" id="p-merge">
+  <h2>Gabung PDF</h2>
+  <p class="desc">Satukan beberapa PDF jadi satu. Atur urutan dengan tombol panah.</p>
+  <div class="drop" id="d-merge"><b>Klik untuk pilih file</b> atau seret PDF ke sini<input type="file" accept="application/pdf,.pdf" multiple></div>
+  <ul class="list" id="l-merge"></ul>
+  <button class="go" id="go-merge" disabled>Gabungkan</button>
+  <div class="bar" id="b-merge"><i></i></div>
+  <div class="status" id="s-merge"></div>
+  <div class="result" id="r-merge"></div>
+</section>
+
+<!-- KOMPRES -->
+<section class="panel" id="p-compress">
+  <h2>Kompres PDF</h2>
+  <p class="desc">Perkecil ukuran PDF untuk upload ke portal, email, atau WhatsApp.</p>
+  <div class="drop" id="d-compress"><b>Klik untuk pilih file</b> atau seret PDF ke sini<input type="file" accept="application/pdf,.pdf"></div>
+  <ul class="list" id="l-compress"></ul>
+  <div class="row">
+    <label>Tingkat kompresi</label>
+    <div class="radios" id="q-compress">
+      <label><input type="radio" name="q" value="high"><span>Ringan (kualitas terbaik)</span></label>
+      <label><input type="radio" name="q" value="mid" checked><span>Sedang (disarankan)</span></label>
+      <label><input type="radio" name="q" value="low"><span>Maksimal (paling kecil)</span></label>
+    </div>
+    <span class="hint">Catatan: kompresi mengubah tiap halaman menjadi gambar, jadi teks di hasilnya tidak bisa diseleksi/dicari. Cocok untuk dokumen scan dan formulir.</span>
+  </div>
+  <button class="go" id="go-compress" disabled>Kompres</button>
+  <div class="bar" id="b-compress"><i></i></div>
+  <div class="status" id="s-compress"></div>
+  <div class="result" id="r-compress"></div>
+</section>
+
+<!-- EDIT HALAMAN -->
+<section class="panel" id="p-pages">
+  <h2>Edit Halaman PDF</h2>
+  <p class="desc">Ambil, hapus, atau putar halaman tertentu. Teks tetap bisa diseleksi.</p>
+  <div class="drop" id="d-pages"><b>Klik untuk pilih file</b> atau seret PDF ke sini<input type="file" accept="application/pdf,.pdf"></div>
+  <ul class="list" id="l-pages"></ul>
+  <div class="row">
+    <label>Aksi</label>
+    <div class="radios" id="a-pages">
+      <label><input type="radio" name="act" value="keep" checked><span>Ambil halaman</span></label>
+      <label><input type="radio" name="act" value="delete"><span>Hapus halaman</span></label>
+      <label><input type="radio" name="act" value="rotate"><span>Putar halaman</span></label>
+    </div>
+  </div>
+  <div class="row">
+    <label for="rng">Nomor halaman <span class="hint" id="rng-h">contoh: 1-3, 5, 8-10</span></label>
+    <input type="text" id="rng" placeholder="1-3, 5, 8-10" autocomplete="off">
+  </div>
+  <div class="row" id="rot-row" style="display:none">
+    <label for="rot">Arah putar</label>
+    <select id="rot"><option value="90">90° searah jarum jam</option><option value="180">180°</option><option value="270">90° berlawanan jarum jam</option></select>
+  </div>
+  <button class="go" id="go-pages" disabled>Proses</button>
+  <div class="bar" id="b-pages"><i></i></div>
+  <div class="status" id="s-pages"></div>
+  <div class="result" id="r-pages"></div>
+</section>
+
+<!-- GAMBAR KE PDF -->
+<section class="panel" id="p-img">
+  <h2>Gambar ke PDF</h2>
+  <p class="desc">Ubah foto atau hasil scan (JPG, PNG, WebP) menjadi satu PDF.</p>
+  <div class="drop" id="d-img"><b>Klik untuk pilih gambar</b> atau seret ke sini<input type="file" accept="image/*" multiple></div>
+  <ul class="list" id="l-img"></ul>
+  <div class="row">
+    <label for="pm">Ukuran halaman</label>
+    <select id="pm"><option value="a4">A4 (gambar dipas di tengah)</option><option value="fit">Sesuai ukuran gambar</option></select>
+  </div>
+  <button class="go" id="go-img" disabled>Buat PDF</button>
+  <div class="bar" id="b-img"><i></i></div>
+  <div class="status" id="s-img"></div>
+  <div class="result" id="r-img"></div>
+</section>
+
+<div class="sup" id="sup">
+  <img src="qris.png" alt="QRIS untuk dukungan" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+  <div class="ph">Letakkan file qris.png di folder yang sama</div>
+  <div class="tx">
+    <h3>Terbantu? Traktir kopi ☕</h3>
+    <p>Alat ini gratis dan akan terus gratis. Kalau berguna, dukunganmu lewat QRIS (BCA atau e-wallet apa saja) membantu biaya pengembangan alat-alat berikutnya. Berapa pun sangat berarti.</p>
+  </div>
+</div>
+
+<p class="priv"><b>Privasi:</b> semua proses berjalan di perangkatmu sendiri. File PDF dan gambar kamu tidak dikirim ke server mana pun, jadi aman dipakai untuk dokumen pribadi.</p>
+<footer>© <span id="yr"></span> Borneo Tech Studio</footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+const $=s=>document.querySelector(s);
+const fmt=b=>b<1024?b+' B':b<1048576?(b/1024).toFixed(1)+' KB':(b/1048576).toFixed(2)+' MB';
+const esc=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const baseName=n=>n.replace(/\.[^.]+$/,'');
+document.getElementById('yr').textContent=new Date().getFullYear();
+if(window.pdfjsLib){pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';}
+
+/* ---------- tabs ---------- */
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected',x===t));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('on',p.id==='p-'+t.dataset.tab));
+}));
+
+/* ---------- helpers ---------- */
+function download(bytes,name,type){
+  const u=URL.createObjectURL(new Blob([bytes],{type:type||'application/pdf'}));
+  const a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(u),5000);
+}
+function status(id,msg,kind){const e=$('#s-'+id);e.textContent=msg||'';e.className='status'+(kind?' '+kind:'');}
+function progress(id,p){const b=$('#b-'+id);b.style.display=p==null?'none':'block';if(p!=null)b.firstElementChild.style.width=Math.round(p*100)+'%';}
+function showResult(id,title,meta,bytes,name,type){
+  const r=$('#r-'+id);
+  r.innerHTML='<div class="t"></div><div class="m"></div><button class="dlb">Unduh</button>';
+  r.children[0].textContent=title;r.children[1].textContent=meta;
+  r.children[2].onclick=()=>download(bytes,name,type);
+  r.classList.add('on');
+  download(bytes,name,type);
+  const s=$('#sup');s.classList.add('hl');setTimeout(()=>s.classList.remove('hl'),4000);
+}
+function clearResult(id){const r=$('#r-'+id);r.classList.remove('on');r.innerHTML='';status(id,'');progress(id,null);}
+function dropzone(id,{pattern,multiple,onFiles}){
+  const d=$('#d-'+id),inp=d.querySelector('input');
+  d.addEventListener('click',()=>inp.click());
+  inp.addEventListener('click',e=>e.stopPropagation());
+  inp.addEventListener('change',()=>{handle([...inp.files]);inp.value='';});
+  ['dragenter','dragover'].forEach(ev=>d.addEventListener(ev,e=>{e.preventDefault();d.classList.add('over');}));
+  ['dragleave','drop'].forEach(ev=>d.addEventListener(ev,e=>{e.preventDefault();d.classList.remove('over');}));
+  d.addEventListener('drop',e=>handle([...e.dataTransfer.files]));
+  function handle(fs){
+    fs=fs.filter(f=>pattern.test(f.type)||pattern.test(f.name));
+    if(!fs.length){status(id,'Tipe file tidak sesuai.','err');return;}
+    onFiles(multiple?fs:[fs[0]]);
+  }
+}
+function parseRange(str,n){
+  const out=[];
+  for(const part of str.split(',').map(s=>s.trim()).filter(Boolean)){
+    const m=part.match(/^(\d+)(?:\s*-\s*(\d+))?$/);
+    if(!m)throw new Error('Format halaman tidak valid: "'+part+'"');
+    let a=+m[1],b=m[2]?+m[2]:a;
+    if(a<1||b<1||a>n||b>n)throw new Error('Halaman di luar jangkauan (PDF ini punya '+n+' halaman).');
+    if(a<=b)for(let i=a;i<=b;i++)out.push(i-1);else for(let i=a;i>=b;i--)out.push(i-1);
+  }
+  return out;
+}
+async function loadPdfLib(file){
+  try{return await PDFLib.PDFDocument.load(await file.arrayBuffer());}
+  catch(e){throw new Error('Tidak bisa membuka "'+file.name+'". File mungkin rusak atau diproteksi password.');}
+}
+function reorderList(arr,i,d){const j=i+d;if(j<0||j>=arr.length)return;[arr[i],arr[j]]=[arr[j],arr[i]];}
+function renderList(id,arr,{movable,onChange}){
+  const ul=$('#l-'+id);ul.innerHTML='';
+  arr.forEach((f,i)=>{
+    const li=document.createElement('li');li.className='item';
+    li.innerHTML='<span class="nm">'+esc(f.name)+'</span><span class="sz">'+fmt(f.size)+'</span>'+
+      (movable?'<button class="ib" title="Naik">↑</button><button class="ib" title="Turun">↓</button>':'')+'<button class="ib" title="Hapus">✕</button>';
+    const b=li.querySelectorAll('button');
+    if(movable){b[0].onclick=()=>{reorderList(arr,i,-1);onChange();};b[1].onclick=()=>{reorderList(arr,i,1);onChange();};}
+    b[b.length-1].onclick=()=>{arr.splice(i,1);onChange();};
+    ul.appendChild(li);
+  });
+}
+async function run(id,btn,fn){
+  clearResult(id);btn.disabled=true;
+  try{await fn();}
+  catch(e){console.error(e);status(id,e.message||'Terjadi kesalahan.','err');progress(id,null);}
+  btn.disabled=false;
+}
+
+/* ---------- GABUNG ---------- */
+const mergeFiles=[];
+function updMerge(){renderList('merge',mergeFiles,{movable:true,onChange:updMerge});$('#go-merge').disabled=mergeFiles.length<2;
+  if(mergeFiles.length===1)status('merge','Tambahkan minimal satu file lagi.');else if(!mergeFiles.length)status('merge','');}
+dropzone('merge',{pattern:/pdf/i,multiple:true,onFiles:fs=>{clearResult('merge');mergeFiles.push(...fs);updMerge();}});
+$('#go-merge').addEventListener('click',()=>run('merge',$('#go-merge'),async()=>{
+  const out=await PDFLib.PDFDocument.create();
+  for(let i=0;i<mergeFiles.length;i++){
+    status('merge','Memproses '+mergeFiles[i].name+' …');progress('merge',i/mergeFiles.length);
+    const src=await loadPdfLib(mergeFiles[i]);
+    const pgs=await out.copyPages(src,src.getPageIndices());
+    pgs.forEach(p=>out.addPage(p));
+  }
+  const bytes=await out.save();
+  progress('merge',null);status('merge','');
+  showResult('merge','PDF berhasil digabung',out.getPageCount()+' halaman · '+fmt(bytes.length),bytes,'gabungan.pdf');
+}));
+
+/* ---------- KOMPRES ---------- */
+let cFile=null;
+const Q={high:{dpi:150,jpg:.8},mid:{dpi:110,jpg:.6},low:{dpi:80,jpg:.45}};
+dropzone('compress',{pattern:/pdf/i,multiple:false,onFiles:fs=>{clearResult('compress');cFile=fs[0];
+  renderList('compress',[cFile],{movable:false,onChange:()=>{cFile=null;$('#l-compress').innerHTML='';$('#go-compress').disabled=true;}});
+  $('#go-compress').disabled=false;}});
+$('#go-compress').addEventListener('click',()=>run('compress',$('#go-compress'),async()=>{
+  if(!window.pdfjsLib)throw new Error('Pustaka PDF belum termuat. Periksa koneksi internet lalu muat ulang halaman.');
+  const q=Q[document.querySelector('input[name=q]:checked').value];
+  const pdf=await pdfjsLib.getDocument({data:new Uint8Array(await cFile.arrayBuffer())}).promise
+    .catch(()=>{throw new Error('Tidak bisa membuka file. Mungkin rusak atau diproteksi password.');});
+  const out=await PDFLib.PDFDocument.create();
+  for(let i=1;i<=pdf.numPages;i++){
+    status('compress','Mengompres halaman '+i+' dari '+pdf.numPages+' …');progress('compress',(i-1)/pdf.numPages);
+    const page=await pdf.getPage(i);
+    const base=page.getViewport({scale:1});
+    const vp=page.getViewport({scale:q.dpi/72});
+    const c=document.createElement('canvas');c.width=Math.ceil(vp.width);c.height=Math.ceil(vp.height);
+    const ctx=c.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,c.width,c.height);
+    await page.render({canvasContext:ctx,viewport:vp}).promise;
+    const blob=await new Promise(r=>c.toBlob(r,'image/jpeg',q.jpg));
+    const img=await out.embedJpg(await blob.arrayBuffer());
+    const p=out.addPage([base.width,base.height]);
+    p.drawImage(img,{x:0,y:0,width:base.width,height:base.height});
+    c.width=c.height=0;page.cleanup();
+  }
+  const bytes=await out.save();
+  progress('compress',null);
+  const before=cFile.size,after=bytes.length;
+  if(after>=before){
+    status('compress','PDF ini sudah efisien: hasil kompresi tidak lebih kecil dari aslinya. Coba tingkat "Maksimal", atau pakai file asli.','warn');
+    showResult('compress','Hasil kompresi (tidak lebih kecil)',fmt(before)+' → '+fmt(after),bytes,baseName(cFile.name)+'-kompres.pdf');
+  }else{
+    status('compress','');
+    showResult('compress','Berhasil dikompres',fmt(before)+' → '+fmt(after)+' (hemat '+Math.round((1-after/before)*100)+'%)',bytes,baseName(cFile.name)+'-kompres.pdf');
+  }
+}));
+
+/* ---------- EDIT HALAMAN ---------- */
+let pFile=null,pDoc=null;
+function updAct(){
+  const a=document.querySelector('input[name=act]:checked').value;
+  $('#rot-row').style.display=a==='rotate'?'flex':'none';
+  $('#rng-h').textContent=a==='rotate'?'(kosongkan untuk memutar semua halaman)':'contoh: 1-3, 5, 8-10';
+  $('#go-pages').textContent=a==='keep'?'Ambil halaman':a==='delete'?'Hapus halaman':'Putar halaman';
+}
+document.querySelectorAll('input[name=act]').forEach(r=>r.addEventListener('change',updAct));updAct();
+dropzone('pages',{pattern:/pdf/i,multiple:false,onFiles:async fs=>{
+  clearResult('pages');pFile=fs[0];pDoc=null;$('#go-pages').disabled=true;
+  renderList('pages',[pFile],{movable:false,onChange:()=>{pFile=null;pDoc=null;$('#l-pages').innerHTML='';$('#go-pages').disabled=true;status('pages','');}});
+  try{pDoc=await loadPdfLib(pFile);status('pages','PDF ini memiliki '+pDoc.getPageCount()+' halaman.');$('#go-pages').disabled=false;}
+  catch(e){status('pages',e.message,'err');}
+}});
+$('#go-pages').addEventListener('click',()=>run('pages',$('#go-pages'),async()=>{
+  const act=document.querySelector('input[name=act]:checked').value;
+  const src=await loadPdfLib(pFile),n=src.getPageCount(),txt=$('#rng').value.trim();
+  if(act!=='rotate'&&!txt)throw new Error('Isi nomor halaman terlebih dahulu.');
+  let out,idx=txt?parseRange(txt,n):src.getPageIndices(),name,title;
+  if(act==='keep'){
+    out=await PDFLib.PDFDocument.create();
+    (await out.copyPages(src,idx)).forEach(p=>out.addPage(p));
+    name=baseName(pFile.name)+'-halaman.pdf';title='Halaman berhasil diambil';
+  }else if(act==='delete'){
+    const del=[...new Set(idx)].sort((a,b)=>b-a);
+    if(del.length>=n)throw new Error('Tidak bisa menghapus semua halaman.');
+    del.forEach(i=>src.removePage(i));out=src;
+    name=baseName(pFile.name)+'-edit.pdf';title='Halaman berhasil dihapus';
+  }else{
+    const deg=+$('#rot').value;
+    new Set(idx).forEach(i=>{const p=src.getPage(i);p.setRotation(PDFLib.degrees((p.getRotation().angle+deg)%360));});
+    out=src;name=baseName(pFile.name)+'-putar.pdf';title='Halaman berhasil diputar';
+  }
+  const bytes=await out.save();
+  status('pages','');
+  showResult('pages',title,out.getPageCount()+' halaman · '+fmt(bytes.length),bytes,name);
+}));
+
+/* ---------- GAMBAR KE PDF ---------- */
+const imgFiles=[];
+function updImg(){renderList('img',imgFiles,{movable:true,onChange:updImg});$('#go-img').disabled=!imgFiles.length;}
+dropzone('img',{pattern:/^image\/|\.(jpe?g|png|webp|gif|bmp)$/i,multiple:true,onFiles:fs=>{clearResult('img');imgFiles.push(...fs);updImg();}});
+async function toJpeg(file){
+  const bmp=await createImageBitmap(file);
+  const c=document.createElement('canvas');c.width=bmp.width;c.height=bmp.height;
+  const ctx=c.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,c.width,c.height);ctx.drawImage(bmp,0,0);
+  const w=bmp.width,h=bmp.height;bmp.close&&bmp.close();
+  const blob=await new Promise(r=>c.toBlob(r,'image/jpeg',.92));
+  return {bytes:await blob.arrayBuffer(),w,h};
+}
+$('#go-img').addEventListener('click',()=>run('img',$('#go-img'),async()=>{
+  const out=await PDFLib.PDFDocument.create(),mode=$('#pm').value;
+  for(let i=0;i<imgFiles.length;i++){
+    status('img','Memproses gambar '+(i+1)+' dari '+imgFiles.length+' …');progress('img',i/imgFiles.length);
+    let im;try{im=await toJpeg(imgFiles[i]);}catch(e){throw new Error('Tidak bisa membaca gambar "'+imgFiles[i].name+'".');}
+    const emb=await out.embedJpg(im.bytes);
+    if(mode==='fit'){
+      const p=out.addPage([im.w,im.h]);p.drawImage(emb,{x:0,y:0,width:im.w,height:im.h});
+    }else{
+      const W=595.28,H=841.89,m=24,s=Math.min((W-2*m)/im.w,(H-2*m)/im.h),w=im.w*s,h=im.h*s;
+      const p=out.addPage([W,H]);p.drawImage(emb,{x:(W-w)/2,y:(H-h)/2,width:w,height:h});
+    }
+  }
+  const bytes=await out.save();
+  progress('img',null);status('img','');
+  showResult('img','PDF berhasil dibuat',out.getPageCount()+' halaman · '+fmt(bytes.length),bytes,'gambar.pdf');
+}));
+</script>
+</body>
+</html>
