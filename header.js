@@ -13,7 +13,8 @@
     { label: 'Portofolio', href: '#portofolio' },
     { label: 'Alat Bantu', children: [
       { label: 'PDF Tools (Gabung, Kompress, Edit, Gambar ke PDF)', href: 'pdf-tools' },
-      { label: 'Hapus Background Foto',                             href: 'remove-background' }
+      { label: 'Hapus Background Foto',                             href: 'remove-background' },
+      { label: 'Kompres & Ubah Ukuran Gambar',                      href: 'image-tools' }
     ] },
     { label: 'Tanya jawab', href: '#faq' }
   ];
