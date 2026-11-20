@@ -14,7 +14,8 @@
     { label: 'Alat Bantu', children: [
       { label: 'PDF Tools (Gabung, Kompress, Edit, Gambar ke PDF)', href: 'pdf-tools' },
       { label: 'Hapus Background Foto',                             href: 'remove-background' },
-      { label: 'Kompres & Ubah Ukuran Gambar',                      href: 'image-tools' }
+      { label: 'Kompres & Ubah Ukuran Gambar',                      href: 'image-tools' },
+      { label: 'Pas Foto (2x3, 3x4, 4x6)',                          href: 'pas-foto' }
     ] },
     { label: 'Tanya jawab', href: '#faq' }
   ];
