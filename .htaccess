@@ -1,0 +1,7 @@
+# Khusus Apache/XAMPP: izinkan alamat tanpa .html (mis. /myportfolio/pdf-tools)
+# Di Vercel file ini diabaikan, di sana dipakai vercel.json.
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.*)$ $1.html [L]

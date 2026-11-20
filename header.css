@@ -1,0 +1,59 @@
+/* =====================================================
+   header.css : gaya navbar bersama untuk semua halaman
+   Isi menu diatur di header.js
+   ===================================================== */
+header.top {
+  --_bg: var(--bg, #ffffff);
+  --_line: var(--line, #dbe3ef);
+  --_ink: var(--ink, #0a0a0a);
+  --_river: var(--river, #1d4ed8);
+  --_panel: var(--panel, #eef3fb);
+  --_sun-soft: var(--sun-soft, #dbe7ff);
+  --_radius: var(--radius, 14px);
+  --_wrap: var(--wrap, 1120px);
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(255, 255, 255, .92);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--_line);
+}
+header.top .hwrap { width: min(var(--_wrap), 100% - 40px); margin-inline: auto; display: flex; align-items: center; justify-content: space-between; height: 68px; }
+header.top .brand { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 20px; letter-spacing: -0.02em; text-decoration: none; display: flex; align-items: center; gap: 10px; color: inherit; }
+header.top .brand img { height: 38px; width: auto; flex: none; display: block; }
+
+header.top nav.main { display: flex; align-items: center; gap: 28px; }
+header.top nav.main a { text-decoration: none; font-weight: 500; font-size: 15px; color: inherit; }
+header.top nav.main a:not(.nav-wa):hover { color: var(--_river); }
+header.top nav.main a.nav-wa { display: inline-flex; align-items: center; padding: 10px 18px; border-radius: 999px; font-weight: 600; font-size: 15px; background: #25D366; color: #0a0a0a; transition: transform .15s ease, background .15s ease; }
+header.top nav.main a.nav-wa:hover { background: #3ee07f; transform: translateY(-2px); }
+
+/* Dropdown */
+header.top .dd { position: relative; }
+header.top .dd-btn { font: inherit; font-weight: 500; font-size: 15px; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+header.top .dd-btn:hover { color: var(--_river); }
+header.top .dd-btn svg { width: 14px; height: 14px; transition: transform .15s ease; }
+header.top .dd-btn[aria-expanded="true"] svg { transform: rotate(180deg); }
+header.top .dd-list { position: absolute; top: calc(100% + 14px); left: 0; width: 280px; max-width: calc(100vw - 40px); list-style: none; margin: 0; padding: 6px; background: var(--_bg); border: 1px solid var(--_line); border-radius: var(--_radius); box-shadow: 0 12px 28px rgba(10, 10, 10, .12); }
+header.top .dd-list[hidden] { display: none; }
+header.top nav.main .dd-list a { display: block; padding: 10px 12px; border-radius: 8px; line-height: 1.4; }
+header.top nav.main .dd-list a:hover { background: var(--_panel); }
+header.top nav.main .dd-list a[aria-current="page"] { background: var(--_sun-soft); color: var(--_river); font-weight: 600; }
+
+/* Tombol menu (HP) */
+header.top .menu-btn { display: none; background: none; border: 2px solid var(--_ink); border-radius: 10px; width: 44px; height: 44px; cursor: pointer; color: var(--_ink); }
+header.top .menu-btn svg { width: 22px; height: 22px; margin: auto; }
+
+@media (max-width: 720px) {
+  header.top .menu-btn { display: flex; }
+  header.top nav.main { display: none; position: absolute; top: 68px; left: 0; right: 0; flex-direction: column; align-items: stretch; gap: 0; background: var(--_bg); border-bottom: 1px solid var(--_line); padding: 8px 20px 20px; }
+  header.top nav.main.open { display: flex; }
+  header.top nav.main a:not(.nav-wa) { padding: 14px 0; border-bottom: 1px solid var(--_line); }
+  header.top nav.main a.nav-wa { margin-top: 16px; justify-content: center; }
+  header.top .dd { border-bottom: 1px solid var(--_line); }
+  header.top .dd-btn { width: 100%; justify-content: space-between; padding: 14px 0; }
+  header.top .dd-list { position: static; width: auto; max-width: none; box-shadow: none; border: 0; border-radius: 0; background: transparent; padding: 0 0 10px 14px; }
+  header.top nav.main .dd-list a:not(.nav-wa) { padding: 10px 0; border-bottom: 0; }
+  header.top nav.main .dd-list a[aria-current="page"] { background: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  header.top nav.main a.nav-wa, header.top .dd-btn svg { transition: none; }
+}

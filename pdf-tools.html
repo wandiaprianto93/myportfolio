@@ -22,37 +22,6 @@
     .wrap { width: min(var(--wrap), 100% - 40px); margin-inline: auto; }
     .narrow { max-width: 820px; }
 
-    /* ---------- Buttons ---------- */
-    .btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 24px; border-radius: 999px; font-weight: 600; font-size: 16px; text-decoration: none; border: 2px solid transparent; transition: transform .15s ease, background .15s ease, color .15s ease; cursor: pointer; }
-    .btn:hover { transform: translateY(-2px); }
-    .btn-sun { background: #25D366; color: #0a0a0a; }
-    .btn-sun:hover { background: #3ee07f; }
-
-    /* ---------- Header ---------- */
-    header.top { position: sticky; top: 0; z-index: 50; background: rgba(255, 255, 255, .92); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
-    .top .wrap { display: flex; align-items: center; justify-content: space-between; height: 68px; }
-    .brand { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 20px; letter-spacing: -0.02em; text-decoration: none; display: flex; align-items: center; gap: 10px; }
-    .brand img { height: 38px; width: auto; flex: none; }
-    nav.main { display: flex; align-items: center; gap: 28px; }
-    nav.main a { text-decoration: none; font-weight: 500; font-size: 15px; }
-    nav.main a:not(.btn):hover { color: var(--river); }
-    nav.main .btn { padding: 10px 18px; font-size: 15px; }
-
-    /* Dropdown Alat Bantu */
-    .dd { position: relative; }
-    .dd-btn { font: inherit; font-weight: 500; font-size: 15px; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
-    .dd-btn:hover { color: var(--river); }
-    .dd-btn svg { width: 14px; height: 14px; transition: transform .15s ease; }
-    .dd-btn[aria-expanded="true"] svg { transform: rotate(180deg); }
-    .dd-list { position: absolute; top: calc(100% + 14px); left: 0; width: 280px; max-width: calc(100vw - 40px); list-style: none; padding: 6px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: 0 12px 28px rgba(10, 10, 10, .12); }
-    .dd-list[hidden] { display: none; }
-    nav.main .dd-list a { display: block; padding: 10px 12px; border-radius: 8px; line-height: 1.4; }
-    nav.main .dd-list a:hover { background: var(--panel); }
-    nav.main .dd-list a[aria-current="page"] { background: var(--sun-soft); color: var(--river); font-weight: 600; }
-
-    .menu-btn { display: none; background: none; border: 2px solid var(--ink); border-radius: 10px; width: 44px; height: 44px; cursor: pointer; color: var(--ink); }
-    .menu-btn svg { width: 22px; height: 22px; margin: auto; }
-
     /* ---------- Judul halaman ---------- */
     .page-head { padding: 56px 0 24px; }
     .page-head h1 { font-size: clamp(2.2rem, 5vw, 3.6rem); font-weight: 800; margin-bottom: 14px; }
@@ -142,16 +111,6 @@
     /* ---------- Responsif ---------- */
     @media (max-width: 720px) {
       body { font-size: 16px; }
-      .menu-btn { display: flex; }
-      nav.main { display: none; position: absolute; top: 68px; left: 0; right: 0; flex-direction: column; align-items: stretch; gap: 0; background: var(--bg); border-bottom: 1px solid var(--line); padding: 8px 20px 20px; }
-      nav.main.open { display: flex; }
-      nav.main a:not(.btn) { padding: 14px 0; border-bottom: 1px solid var(--line); }
-      nav.main .btn { margin-top: 16px; justify-content: center; }
-      .dd { border-bottom: 1px solid var(--line); }
-      .dd-btn { width: 100%; justify-content: space-between; padding: 14px 0; }
-      .dd-list { position: static; width: auto; max-width: none; box-shadow: none; border: 0; border-radius: 0; background: transparent; padding: 0 0 10px 14px; }
-      nav.main .dd-list a:not(.btn) { padding: 10px 0; border-bottom: 0; }
-      nav.main .dd-list a[aria-current="page"] { background: none; }
       .page-head { padding: 36px 0 16px; }
       .panel { padding: 18px; box-shadow: 5px 5px 0 var(--ink); margin-right: 5px; }
       .sup { padding: 22px; }
@@ -161,38 +120,11 @@
       .btn, .go, .tab { transition: none; }
     }
 </style>
+<link rel="stylesheet" href="header.css">
 </head>
 <body>
 
-  <header class="top">
-    <div class="wrap">
-      <a href="/" class="brand"><img src="img/logo.png" alt="" width="46" height="38">Borneo Tech Studio</a>
-
-      <button class="menu-btn" id="menuBtn" aria-label="Buka menu" aria-expanded="false" aria-controls="mainNav">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true">
-          <path d="M4 7h16M4 12h16M4 17h16" />
-        </svg>
-      </button>
-
-      <nav class="main" id="mainNav">
-        <a href="/#layanan">Layanan</a>
-        <a href="/#proses">Cara kerja</a>
-        <a href="/#portofolio">Portofolio</a>
-        <div class="dd">
-          <button type="button" class="dd-btn" aria-expanded="false" aria-controls="ddAlat">
-            Alat Bantu
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg>
-          </button>
-          <ul class="dd-list" id="ddAlat" hidden>
-            <li><a href="/pdf-tools" aria-current="page">PDF Tools (Gabung, Kompress, Edit, Gambar ke PDF)</a></li>
-            <li><a href="/remove-background">Hapus Background Foto</a></li>
-          </ul>
-        </div>
-        <a href="/#faq">Tanya jawab</a>
-        <a class="btn btn-sun" href="https://wa.me/6285250878278?text=Halo%20Borneo%20Tech%20Studio%2C%20saya%20ingin%20konsultasi%20pembuatan%20website%2Faplikasi%20untuk%20bisnis%20saya." target="_blank" rel="noopener">Chat WhatsApp</a>
-      </nav>
-    </div>
-  </header>
+  <script src="header.js"></script>
 
   <section class="page-head">
     <div class="wrap narrow">
@@ -609,18 +541,6 @@ $('#go-word').addEventListener('click',()=>run('word',$('#go-word'),async()=>{
   showResult('word','Word berhasil diubah ke PDF',out.getPageCount()+' halaman · '+fmt(bytes.length),bytes,baseName(wFile.name)+'.pdf');
 }));
 
-/* ---------- menu header ---------- */
-(function(){
-  var btn=document.getElementById('menuBtn'),nav=document.getElementById('mainNav');
-  function setMenu(o){nav.classList.toggle('open',o);btn.setAttribute('aria-expanded',o?'true':'false');}
-  btn.addEventListener('click',function(){setMenu(!nav.classList.contains('open'));});
-  nav.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){setMenu(false);});});
-  var ddBtn=document.querySelector('.dd-btn'),ddList=document.getElementById('ddAlat');
-  function setDd(o){ddBtn.setAttribute('aria-expanded',o?'true':'false');ddList.hidden=!o;}
-  ddBtn.addEventListener('click',function(e){e.stopPropagation();setDd(ddBtn.getAttribute('aria-expanded')!=='true');});
-  document.addEventListener('click',function(e){if(!ddList.contains(e.target))setDd(false);});
-  document.addEventListener('keydown',function(e){if(e.key==='Escape'){setDd(false);ddBtn.focus();}});
-})();
 </script>
 </body>
 </html>
